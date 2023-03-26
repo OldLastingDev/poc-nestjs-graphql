@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { generateUuid } from 'src/libs/uuid';
-import { UserEntity } from './entities/user.entity';
+import { UserEntity } from './user.entity';
 
 import type { CreateUserInput, UpdateUserInput } from 'src/graphql.autogen';
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/graphql.autogen';
-import { UserEntity } from './entities/user.entity';
+import { UserEntity } from './user.entity';
 
 @Injectable()
 export class UserPresenter {
