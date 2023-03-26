@@ -1,3 +1,10 @@
+/**
+ * TODO: このファイルの正しい置き場所はどこだろう？
+ */
+
+/**
+ * Entity を表すクラスに実装されるべき機能
+ */
 export interface IEntity {
   readonly uuid: string;
   readonly createdAt: number;
