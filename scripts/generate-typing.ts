@@ -5,9 +5,11 @@
 import { GraphQLDefinitionsFactory } from '@nestjs/graphql';
 import { join } from 'path';
 
+const SRC_DIR = join(process.cwd(), '..', 'src');
+
 const definitionsFactory = new GraphQLDefinitionsFactory();
 definitionsFactory.generate({
-  typePaths: ['./src/**/*.graphql'],
-  path: join(process.cwd(), 'src/graphql.autogen.ts'),
+  typePaths: [join(SRC_DIR, '**/*.graphql')],
+  path: join(SRC_DIR, 'graphql.autogen.ts'),
   outputAs: 'class',
 });

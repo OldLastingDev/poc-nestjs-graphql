@@ -36,7 +36,7 @@ export abstract class IMutation {
 
     abstract updateUser(id: string, updateUserInput: UpdateUserInput): User | Promise<User>;
 
-    abstract removeUser(id: number): Nullable<User> | Promise<Nullable<User>>;
+    abstract removeUser(id: number): Nullable<boolean> | Promise<Nullable<boolean>>;
 }
 
 type Nullable<T> = T | null;
