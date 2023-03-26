@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { generateUuid } from 'src/libs/uuid';
 import { UserEntity } from './user.entity';
 
 import type { CreateUserInput, UpdateUserInput } from 'src/graphql.autogen';
@@ -10,7 +9,6 @@ export class UserService {
 
   async create(createUserInput: CreateUserInput): Promise<UserEntity> {
     const entity = new UserEntity({
-      uuid: generateUuid(),
       name: createUserInput.name,
       age: createUserInput.age,
     });

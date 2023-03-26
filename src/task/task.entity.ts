@@ -112,10 +112,12 @@ export class TaskEntity implements IEntity {
 
   trash(): void {
     this.properties.deadlineAt = Date.now();
+    this.updated();
   }
 
   untrash(): void {
     this.properties.deletedAt = undefined;
+    this.updated();
   }
 
   hasTrashed(): boolean {
