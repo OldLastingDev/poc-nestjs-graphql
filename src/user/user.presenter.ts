@@ -4,6 +4,8 @@ import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UserPresenter {
+  // TODO(enhancement): バリデーション関数の実装
+
   toResponse(entity: UserEntity): User {
     return {
       id: entity.uuid,
