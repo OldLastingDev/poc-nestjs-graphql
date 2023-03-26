@@ -16,7 +16,8 @@ export class UserResolver {
 
   @Mutation('createUser')
   async create(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return await this.service.create(createUserInput);
+    const entity = await this.service.create(createUserInput);
+    return this.presenter.toResponse(entity);
   }
 
   @Query('users')
