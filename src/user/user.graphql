@@ -16,7 +16,7 @@ input UpdateUserInput {
 }
 
 type Query {
-  user: [User]!
+  users: [User]!
   user(id: Int!): User
 }
 

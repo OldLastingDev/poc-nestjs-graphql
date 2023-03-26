@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { generateUuid } from 'src/libs/uuid';
 import { UserEntity } from './entities/user.entity';
 
-import type { CreateUserInput } from './dto/create-user.input';
-import type { UpdateUserInput } from './dto/update-user.input';
+import type { CreateUserInput, UpdateUserInput } from 'src/graphql.autogen';
 
 @Injectable()
 export class UserService {
