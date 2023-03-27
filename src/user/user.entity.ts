@@ -1,4 +1,4 @@
-import { IEntity } from 'src/IEntity';
+import { IEntity } from 'src/interfaces/IEntity';
 import { generateUuid } from 'src/libs/uuid';
 
 type Properties = {

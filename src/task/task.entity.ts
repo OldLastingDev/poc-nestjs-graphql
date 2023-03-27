@@ -1,6 +1,6 @@
 import { generateUuid } from 'src/libs/uuid';
 import type { UserEntity } from 'src/user/user.entity';
-import type { IEntity } from 'src/IEntity';
+import type { IEntity } from 'src/interfaces/IEntity';
 
 type Properties = {
   readonly uuid: string;
