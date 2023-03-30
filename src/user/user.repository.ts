@@ -7,6 +7,19 @@ import { UserEntity } from './user.entity';
 export class UserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  // TODO(enhancement): pagination
+  async findAll(): Promise<UserEntity[]> {
+    const models = await this.prisma.user.findMany({
+      where: {
+        deletedAt: {
+          equals: null,
+        },
+      },
+    });
+
+    return models.map(this.toEntity);
+  }
+
   async findByUuid(uuid: string): Promise<UserEntity | null> {
     try {
       // findFirstOrThrow だと where がユニークなもの以外指定できない

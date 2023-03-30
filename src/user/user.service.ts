@@ -20,7 +20,7 @@ export class UserService {
   }
 
   async findAll(): Promise<UserEntity[]> {
-    return this.users;
+    return await this.repository.findAll();
   }
 
   async findByUuid(uuid: string): Promise<UserEntity | null> {
