@@ -4,9 +4,16 @@ import { UserResolver } from './user.resolver';
 import { UserPresenter } from './user.presenter';
 import { UserRepository } from './user.repository';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { UserUsecase } from './user.usecase';
 
 @Module({
   imports: [PrismaModule],
-  providers: [UserRepository, UserResolver, UserService, UserPresenter],
+  providers: [
+    UserUsecase,
+    UserService,
+    UserResolver,
+    UserPresenter,
+    UserRepository,
+  ],
 })
 export class UserModule {}
