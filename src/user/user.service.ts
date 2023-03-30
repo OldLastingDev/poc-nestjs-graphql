@@ -44,12 +44,13 @@ export class UserService {
     });
   }
 
-  async removeByUuid(id: string): Promise<void> {
-    const idSet = new Set(this.users.map((user) => user.uuid));
-    if (!idSet.has(id)) {
-      throw new Error('Not found');
+  async removeByUuid(uuid: string): Promise<void> {
+    const target = await this.userUsecase.findByUuid(uuid);
+
+    if (target === null) {
+      throw new Error('Not found a user');
     }
 
-    this.users = this.users.filter((user) => user.uuid !== id);
+    await this.userUsecase.remove(target);
   }
 }

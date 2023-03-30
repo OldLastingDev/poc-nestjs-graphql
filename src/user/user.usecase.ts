@@ -45,4 +45,10 @@ export class UserUsecase {
 
     return this.userRepository.update(entity);
   }
+
+  async remove(entity: UserEntity): Promise<void> {
+    entity.trash();
+
+    await this.userRepository.update(entity);
+  }
 }

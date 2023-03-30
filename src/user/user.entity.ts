@@ -70,6 +70,14 @@ export class UserEntity implements IEntity {
     return this.properties.updatedAt;
   }
 
+  get deletedAt(): Date | null {
+    if (this.properties.deletedAt === undefined) {
+      return null;
+    }
+
+    return this.properties.deletedAt;
+  }
+
   private throwNeverBeenPerpetuatedError(): never {
     throw new Error('[UserEntity] This entity has never been perpetuated.');
   }

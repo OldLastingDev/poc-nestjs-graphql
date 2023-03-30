@@ -58,6 +58,7 @@ export class UserRepository {
       data: {
         name: entity.name,
         age: entity.age,
+        deletedAt: entity.deletedAt,
       },
     });
 

@@ -46,8 +46,8 @@ export class UserResolver {
   }
 
   @Mutation('removeUser')
-  async remove(@Args('id') id: string): Promise<boolean> {
-    await this.service.removeByUuid(id);
+  async remove(@Args('id') uuid: string): Promise<boolean> {
+    await this.service.removeByUuid(uuid);
     return true;
   }
 }
