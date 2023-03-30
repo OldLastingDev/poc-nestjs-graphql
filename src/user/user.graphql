@@ -10,14 +10,14 @@ input CreateUserInput {
 }
 
 input UpdateUserInput {
-  id: Int!
+  id: String!
   name: String!
   age: Int!
 }
 
 type Query {
   users: [User]!
-  user(id: Int!): User
+  user(id: String!): User
 }
 
 type Mutation {

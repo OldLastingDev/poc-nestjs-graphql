@@ -13,7 +13,9 @@ export class UserRepository {
       const model = await this.prisma.user.findFirstOrThrow({
         where: {
           uuid: uuid,
-          deletedAt: null,
+          deletedAt: {
+            equals: null,
+          },
         },
       });
 
