@@ -2,37 +2,29 @@ import { Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 
 import type { CreateUserInput, UpdateUserInput } from 'src/graphql.autogen';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
   private users: UserEntity[] = [];
 
+  constructor(private readonly repository: UserRepository) {}
+
   async create(createUserInput: CreateUserInput): Promise<UserEntity> {
-    const entity = new UserEntity({
+    const entity = UserEntity.new({
       name: createUserInput.name,
       age: createUserInput.age,
     });
-    this.users.push(entity);
 
-    return entity;
+    return await this.repository.create(entity);
   }
 
   async findAll(): Promise<UserEntity[]> {
     return this.users;
   }
 
-  async findByUuid(id: string): Promise<UserEntity | null> {
-    const targets = this.users.filter((user) => user.uuid === id);
-
-    if (targets.length === 0) {
-      return null;
-    }
-
-    if (targets.length === 1) {
-      return targets[0] !== undefined ? targets[0] : null;
-    }
-
-    throw new Error('UUID is duplicated');
+  async findByUuid(uuid: string): Promise<UserEntity | null> {
+    return await this.repository.findByUuid(uuid);
   }
 
   async update(

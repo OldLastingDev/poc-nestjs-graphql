@@ -1,30 +1,45 @@
 import { IEntity } from 'src/interfaces/IEntity';
 import { generateUuid } from 'src/libs/uuid';
 
-type Properties = {
+type EssentialProperties = {
   readonly uuid: string;
   name: string;
   age: number;
-  readonly createdAt: number;
-  updatedAt: number;
-  deletedAt?: number;
 };
 
-type UpdateInput = Pick<Properties, 'name' | 'age'>;
-type CreateInput = Pick<Properties, 'name' | 'age'>;
+type AllProperties = EssentialProperties & {
+  readonly id?: number;
+
+  readonly createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
+};
+
+type UpdateInput = Pick<AllProperties, 'name' | 'age'>;
+type CreateInput = Pick<AllProperties, 'name' | 'age'>;
 
 export class UserEntity implements IEntity {
-  private readonly properties: Properties;
+  private constructor(private readonly properties: AllProperties) {}
 
-  constructor({ name, age }: CreateInput) {
-    const now = Date.now();
-    this.properties = {
+  static new({ name, age }: CreateInput): UserEntity {
+    const properties: AllProperties = {
       uuid: generateUuid(),
       name: name,
       age: age,
-      createdAt: now,
-      updatedAt: now,
     };
+    return new UserEntity(properties);
+  }
+
+  static factoryWithAllProperties(properties: AllProperties) {
+    return new UserEntity(properties);
+  }
+
+  get _id(): number {
+    if (this.properties.id === undefined) {
+      this.throwNeverBeenPerpetuatedError();
+    }
+
+    return this.properties.id;
   }
 
   get uuid(): string {
@@ -39,17 +54,36 @@ export class UserEntity implements IEntity {
     return this.properties.age;
   }
 
-  get createdAt(): number {
+  get createdAt(): Date {
+    if (this.properties.createdAt === undefined) {
+      this.throwNeverBeenPerpetuatedError();
+    }
+
     return this.properties.createdAt;
   }
 
-  get updatedAt(): number {
+  get updatedAt(): Date {
+    if (this.properties.updatedAt === undefined) {
+      this.throwNeverBeenPerpetuatedError();
+    }
+
     return this.properties.updatedAt;
+  }
+
+  private throwNeverBeenPerpetuatedError(): never {
+    throw new Error('[UserEntity] This entity has never been perpetuated.');
   }
 
   // MEMO: いずれ DBMS の責務になる
   private updated(): void {
-    this.properties.updatedAt = Date.now();
+    if (this.properties.updatedAt === undefined) {
+      this.throwNeverBeenPerpetuatedError();
+    }
+    this.properties.updatedAt = new Date();
+  }
+
+  hasPerpetuated(): boolean {
+    return this.properties.id !== undefined;
   }
 
   update(input: UpdateInput) {
@@ -59,7 +93,7 @@ export class UserEntity implements IEntity {
   }
 
   trash(): void {
-    this.properties.deletedAt = Date.now();
+    this.properties.deletedAt = new Date();
     this.updated();
   }
 

@@ -11,7 +11,7 @@ export class TaskService {
       description: input.description,
       // TODO(enhancement): User を DB から引っ張ってきて存在が証明されてから ownerId を指定する
       ownerId: input.ownerId,
-      deadlineAt: input.deadlineAt,
+      deadlineAt: input.deadlineAt ? new Date(input.deadlineAt) : undefined,
     });
     this.tasks.push(entity);
 
@@ -41,7 +41,7 @@ export class TaskService {
     entity.update({
       title: input.title,
       description: input.description,
-      deadlineAt: input.deadlineAt,
+      deadlineAt: input.deadlineAt ? new Date(input.deadlineAt) : undefined,
     });
     this.tasks[targetIndex] = entity;
 

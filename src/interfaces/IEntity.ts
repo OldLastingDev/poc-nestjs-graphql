@@ -6,9 +6,12 @@
  * Entity を表すクラスに実装されるべき機能
  */
 export interface IEntity {
+  readonly _id: number;
   readonly uuid: string;
-  readonly createdAt: number;
-  readonly updatedAt: number;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+
+  hasPerpetuated(): boolean;
 
   /** 論理削除 */
   trash(): void;
