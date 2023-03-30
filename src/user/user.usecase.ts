@@ -7,6 +7,11 @@ type InputCreateUser = {
   age: number;
 };
 
+type InputUpdateUser = {
+  name: string;
+  age: number;
+};
+
 @Injectable()
 export class UserUsecase {
   constructor(private readonly userRepository: UserRepository) {}
@@ -27,5 +32,17 @@ export class UserUsecase {
 
   async findByUuid(uuid: string): Promise<UserEntity | null> {
     return this.userRepository.findByUuid(uuid);
+  }
+
+  async update(
+    entity: UserEntity,
+    { name, age }: InputUpdateUser,
+  ): Promise<UserEntity> {
+    entity.update({
+      name: name,
+      age: age,
+    });
+
+    return this.userRepository.update(entity);
   }
 }

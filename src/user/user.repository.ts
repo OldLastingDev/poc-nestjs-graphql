@@ -50,6 +50,20 @@ export class UserRepository {
     return this.toEntity(model);
   }
 
+  async update(entity: UserEntity): Promise<UserEntity> {
+    const model = await this.prisma.user.update({
+      where: {
+        id: entity._id,
+      },
+      data: {
+        name: entity.name,
+        age: entity.age,
+      },
+    });
+
+    return this.toEntity(model);
+  }
+
   private toEntity(model: User): UserEntity {
     const entity = UserEntity.factoryWithAllProperties({
       id: model.id,

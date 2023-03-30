@@ -26,28 +26,19 @@ export class UserService {
   }
 
   async update(
-    id: string,
+    uuid: string,
     updateUserInput: UpdateUserInput,
   ): Promise<UserEntity | null> {
-    const targets = this.users.filter((user) => user.uuid === id);
+    const target = await this.userUsecase.findByUuid(uuid);
 
-    if (targets.length === 0) {
+    if (target === null) {
       return null;
     }
 
-    if (targets.length === 1) {
-      const entity = targets[0];
-      if (entity === undefined) {
-        return null;
-      }
-
-      entity.update({
-        name: updateUserInput.name,
-        age: updateUserInput.age,
-      });
-    }
-
-    throw new Error('UUID is duplicated');
+    return await this.userUsecase.update(target, {
+      name: updateUserInput.name,
+      age: updateUserInput.age,
+    });
   }
 
   async removeByUuid(id: string): Promise<void> {
