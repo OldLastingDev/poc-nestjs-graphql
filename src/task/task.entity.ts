@@ -3,16 +3,17 @@ import type { UserEntity } from 'src/user/user.entity';
 import type { IEntity } from 'src/interfaces/IEntity';
 
 type Properties = {
+  readonly id?: number;
   readonly uuid: string;
   title: string;
   description: string;
   done: boolean;
   ownerId: string;
   owner?: UserEntity;
-  deadlineAt: number;
-  readonly createdAt: number;
-  updatedAt: number;
-  deletedAt?: number;
+  deadlineAt?: Date;
+  readonly createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date;
 };
 
 type CreateInput = Pick<
@@ -26,7 +27,7 @@ export class TaskEntity implements IEntity {
   private readonly properties: Properties;
 
   constructor({ title, description, deadlineAt, ownerId }: CreateInput) {
-    const now = Date.now();
+    const now = new Date();
     this.properties = {
       uuid: generateUuid(),
       title: title,
@@ -36,8 +37,19 @@ export class TaskEntity implements IEntity {
       deadlineAt: deadlineAt,
       createdAt: now,
       updatedAt: now,
-      deletedAt: undefined,
     };
+  }
+
+  hasPerpetuated(): boolean {
+    throw new Error('Method not implemented.');
+  }
+
+  get _id(): number {
+    if (this.properties.id === undefined) {
+      this.throwNeverBeenPerpetuatedError();
+    }
+
+    return this.properties.id;
   }
 
   get uuid(): string {
@@ -72,7 +84,7 @@ export class TaskEntity implements IEntity {
     return this.properties.owner;
   }
 
-  get deadlineAt(): number | null {
+  get deadlineAt(): Date | null {
     if (this.properties.deadlineAt === undefined) {
       return null;
     }
@@ -80,17 +92,21 @@ export class TaskEntity implements IEntity {
     return this.properties.deadlineAt;
   }
 
-  get createdAt(): number {
+  get createdAt(): Date {
     return this.properties.createdAt;
   }
 
-  get updatedAt(): number {
+  get updatedAt(): Date {
     return this.properties.updatedAt;
+  }
+
+  private throwNeverBeenPerpetuatedError(): never {
+    throw new Error('[TaskEntity] This entity has never been perpetuated.');
   }
 
   // MEMO: いずれ DBMS の責務になる
   private updated(): void {
-    this.properties.updatedAt = Date.now();
+    this.properties.updatedAt = new Date();
   }
 
   did(): void {
@@ -111,7 +127,7 @@ export class TaskEntity implements IEntity {
   }
 
   trash(): void {
-    this.properties.deadlineAt = Date.now();
+    this.properties.deadlineAt = new Date();
     this.updated();
   }
 

@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// 本当は Index 名を変更したいが、SQLite では対応していないので後回し
+// MySQL を使う場合は型をもう少し最適化した方がいい
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  uuid      String    @unique
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  // Domain
+  name  String
+  age   Int
+  tasks Task[]
+
+  @@map("users")
+}
+
+model Task {
+  id        Int       @id @default(autoincrement())
+  uuid      String    @unique()
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  // Domain
+  title       String
+  description String
+  done        Boolean
+  deadlineAt  DateTime? @map("deadline_at")
+
+  // Relations
+  owner   User @relation(fields: [ownerId], references: [id])
+  ownerId Int  @map("owner_id")
+
+  @@map("tasks")
+}

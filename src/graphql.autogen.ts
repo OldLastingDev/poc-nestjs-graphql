@@ -28,7 +28,6 @@ export class CreateUserInput {
 }
 
 export class UpdateUserInput {
-    id: number;
     name: string;
     age: number;
 }
@@ -51,7 +50,7 @@ export abstract class IQuery {
 
     abstract users(): Nullable<User>[] | Promise<Nullable<User>[]>;
 
-    abstract user(id: number): Nullable<User> | Promise<Nullable<User>>;
+    abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export abstract class IMutation {
@@ -67,7 +66,7 @@ export abstract class IMutation {
 
     abstract updateUser(id: string, updateUserInput: UpdateUserInput): User | Promise<User>;
 
-    abstract removeUser(id: number): Nullable<boolean> | Promise<Nullable<boolean>>;
+    abstract removeUser(id: string): boolean | Promise<boolean>;
 }
 
 export class User {

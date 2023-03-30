@@ -4,6 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { upperDirectiveTransformer } from './libs/directives/upper-case.directive';
 import { UserModule } from './user/user.module';
 import { TaskModule } from './task/task.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { TaskModule } from './task/task.module';
     }),
     UserModule,
     TaskModule,
+    PrismaModule,
   ],
 })
 export class AppModule {}
