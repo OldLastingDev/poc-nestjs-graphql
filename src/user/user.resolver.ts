@@ -38,14 +38,10 @@ export class UserResolver {
 
   @Mutation('updateUser')
   async update(
-    @Args('id') id: string,
+    @Args('id') uuid: string,
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
-  ): Promise<User | null> {
-    const entity = await this.service.update(id, updateUserInput);
-    if (entity === null) {
-      return null;
-    }
-
+  ): Promise<User> {
+    const entity = await this.service.update(uuid, updateUserInput);
     return this.presenter.toResponse(entity);
   }
 

@@ -25,14 +25,17 @@ export class UserService {
     return await this.userUsecase.findByUuid(uuid);
   }
 
+  /**
+   * @throws 指定した UUID の User が存在しなかった場合
+   */
   async update(
     uuid: string,
     updateUserInput: UpdateUserInput,
-  ): Promise<UserEntity | null> {
+  ): Promise<UserEntity> {
     const target = await this.userUsecase.findByUuid(uuid);
 
     if (target === null) {
-      return null;
+      throw new Error('Not found a user');
     }
 
     return await this.userUsecase.update(target, {
