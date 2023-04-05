@@ -1,26 +1,54 @@
+"""
+サービス利用者
+TODO(enhancement): 作成日時・更新日時フィールドの追加
+"""
 type User {
-  id: String!
+  """ 外部ID """
+  id: ID!
+
+  """ ユーザー名 """
   name: String!
+
+  """ ユーザーの年齢（非負整数） """
   age: Int!
 }
 
+""" ユーザー登録に必要なデータ """
 input CreateUserInput {
+  """ ユーザー名 """
   name: String!
+
+  """ ユーザー名 """
   age: Int!
 }
 
+""" ユーザー情報更新に必要なデータ """
 input UpdateUserInput {
+  """ ユーザー名 """
   name: String!
+
+  """ ユーザー名 """
   age: Int!
 }
 
 type Query {
+  """
+  ユーザーの一覧取得
+  TODO(enhancement): GraphQL のプラクティスに沿った Pagination を実装する
+  """
   users: [User]!
-  user(id: String!): User
+
+  """ 外部 ID を用いて一意のユーザー情報を取得する """
+  user(id: ID!): User
 }
 
 type Mutation {
+  """ ユーザー作成 """
   createUser(createUserInput: CreateUserInput!): User!
-  updateUser(id: String!, updateUserInput: UpdateUserInput!): User!
-  removeUser(id: String!): Boolean!
+
+  """ ユーザー情報更新 """
+  updateUser(id: ID!, updateUserInput: UpdateUserInput!): User!
+
+  """ ユーザー論理削除 """
+  removeUser(id: ID!): Boolean!
 }
