@@ -1,12 +1,10 @@
 type Task {
-  """ TODO(enhancement): UUID 型にする """
-  id: String!
+  id: ID!
   title: String!
   description: String!
   done: Boolean!
   owner: User!
 
-  """ TODO(enhancement): Data 型にする """
   deadlineAt: Int
   createdAt: Int!
   updatedAt: Int!
@@ -28,12 +26,12 @@ input UpdateTaskInput {
 
 type Query {
   tasks: [Task]!
-  task(id: String!): Task
+  task(id: ID!): Task
 }
 
 type Mutation {
   createTask(createTaskInput: CreateTaskInput!): Task!
   updateTask(updateTaskInput: UpdateTaskInput!): Task!
-  didTask(id: String!): Task!
-  removeTask(id: String!): Boolean!
+  didTask(id: ID!): Task!
+  removeTask(id: ID!): Boolean!
 }
