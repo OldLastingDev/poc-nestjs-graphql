@@ -1,37 +1,104 @@
+""" タスク """
 type Task {
+  """ 外部 ID """
   id: ID!
+
+  """
+  タスクの概要
+  MEMO: summary のほうが適切かもしれない
+  """
   title: String!
+
+  """ タスクの詳細 """
   description: String!
+
+  """ タスクが完了したか否か """
   done: Boolean!
+
+  """
+  タスクを作成したユーザー
+  現時点では自分のタスクのみを管理する前提なので、Asignee や Reporter の区別は必要ない
+  """
   owner: User!
 
+  """ タスクの締め切り日時(UNIX時間) """
   deadlineAt: Int
+
+  """ タスクの作成日時(UNIX時間) """
   createdAt: Int!
+
+  """ タスクの最終更新日時(UNIX時間) """
   updatedAt: Int!
 }
 
+""" タスクの作成に必要な情報 """
 input CreateTaskInput {
+  """
+  タスクの概要
+  MEMO: summary のほうが適切かもしれない
+  """
   title: String!
+
+  """ タスクの詳細 """
   description: String!
+
+  """ タスクが完了したか否か """
   done: Boolean!
-  ownerId: String!
+
+  """
+  タスクを作成したユーザーの ID
+  現時点では自分のタスクのみを管理する前提なので、Asignee や Reporter の区別は必要ない
+  """
+  ownerId: ID!
+
+  """ タスクの締め切り日時(UNIX時間) """
   deadlineAt: Int
 }
 
+"""
+タスク情報の更新に必要な情報
+完了したか否かは専用の mutation で管理する。
+現時点の設計ではユーザー間でタスクの移譲は不可。
+"""
 input UpdateTaskInput {
+  """
+  タスクの概要
+  MEMO: summary のほうが適切かもしれない
+  """
   title: String!
+
+  """ タスクの詳細 """
   description: String!
+
+  """ タスクの締め切り日時(UNIX時間) """
   deadlineAt: Int
 }
 
 type Query {
+  """
+  タスクの一覧取得
+  FIXME: システムに保存されているすべてのタスクの一覧を取得することはないので、引数で ownerId を受け取るようにする
+  TODO(enhancement): GraphQL のプラクティスに沿った Pagination を実装する
+  """
   tasks: [Task]!
+
+  """ 外部 ID を用いて一意のタスクを取得する """
   task(id: ID!): Task
 }
 
 type Mutation {
+  """ タスク作成 """
   createTask(createTaskInput: CreateTaskInput!): Task!
+
+  """ タスク更新 """
   updateTask(updateTaskInput: UpdateTaskInput!): Task!
+
+  """
+  タスクを完了状態にする
+  TODO(enhancement): タスクを未完了状態にする mutation を実装する
+  """
   didTask(id: ID!): Task!
+
+  """ タスク論理削除 """
   removeTask(id: ID!): Boolean!
 }
