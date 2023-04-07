@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserEntity } from './user.entity';
+import { asULID } from 'src/libs/ulid';
 
 @Injectable()
 export class UserRepository {
@@ -41,7 +42,7 @@ export class UserRepository {
   async create(entity: UserEntity): Promise<UserEntity> {
     const model = await this.prisma.user.create({
       data: {
-        uuid: entity.uuid,
+        uuid: entity.ulid,
         name: entity.name,
         age: entity.age,
       },
@@ -68,7 +69,7 @@ export class UserRepository {
   private toEntity(model: User): UserEntity {
     const entity = UserEntity.factoryWithAllProperties({
       id: model.id,
-      uuid: model.uuid,
+      ulid: asULID(model.uuid),
       name: model.name,
       age: model.age,
       createdAt: model.createdAt,

@@ -23,7 +23,7 @@ export class TaskService {
   }
 
   async findByUuid(id: string): Promise<TaskEntity | null> {
-    const targetIndex = this.tasks.findIndex((task) => task.uuid === id);
+    const targetIndex = this.tasks.findIndex((task) => task.ulid === id);
     if (targetIndex === -1) {
       return null;
     }
@@ -32,7 +32,7 @@ export class TaskService {
   }
 
   async update(id: string, input: UpdateTaskInput): Promise<TaskEntity | null> {
-    const targetIndex = this.tasks.findIndex((task) => task.uuid === id);
+    const targetIndex = this.tasks.findIndex((task) => task.ulid === id);
     if (targetIndex === -1) {
       return null;
     }
@@ -49,6 +49,6 @@ export class TaskService {
   }
 
   async remove(id: string): Promise<void> {
-    this.tasks = this.tasks.filter((task) => task.uuid !== id);
+    this.tasks = this.tasks.filter((task) => task.ulid !== id);
   }
 }

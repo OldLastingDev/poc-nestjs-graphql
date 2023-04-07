@@ -2,12 +2,14 @@
  * TODO: このファイルの正しい置き場所はどこだろう？
  */
 
+import { ULID } from 'src/libs/ulid';
+
 /**
  * Entity を表すクラスに実装されるべき機能
  */
 export interface IEntity {
   readonly _id: number;
-  readonly uuid: string;
+  readonly ulid: ULID;
   readonly createdAt: Date;
   readonly updatedAt: Date;
 

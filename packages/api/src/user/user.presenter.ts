@@ -8,7 +8,7 @@ export class UserPresenter {
 
   toResponse(entity: UserEntity): User {
     return {
-      id: entity.uuid,
+      id: entity.ulid,
       name: entity.name,
       age: entity.age,
     };
