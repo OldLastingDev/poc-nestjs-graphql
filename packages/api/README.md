@@ -1,13 +1,9 @@
-# NestJS tutorial for GraphQL API
+# `@tutorial/api`
+
 ## Description
 
 Nestjs のサンプルを基に GraphQL API を実装するために色々試験的に実装しているリポジトリです。
 
-**Goal: TODO アプリっぽいことを実現するための GraphQL API を作る**
-
-## Feature
-
-TBD
 
 ## モジュールについて
 
@@ -16,42 +12,6 @@ TBD
 ## TypeScript のバージョンについて
 
 現在このプロジェクトでは v4 系を扱っていますが、最新は v5 です。[NestJS 本体がまだ v5 に対応できていないよう](https://github.com/nestjs/nest/pull/11293)なので、対応され次第本プロジェクトでも v5 を採用します。
-
-## Installation
-
-```bash
-$ npm install
-```
-
-## Generate code from GraphQL schema
-
-このリポジトリでは Schema First 手法を採用しています。開発前に必ず以下のコマンドを実行して型定義を最新にしてください。
-
-```bash
-$ npm run codegen
-```
-
-## Running the app
-
-```bash
-# development(watch mode)
-$ npm run dev
-```
-
-## Test
-
-E2E テストは REST API のサンプルから GraphQL へ変更したのでまったく動かないと思います。
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
 
 ## Special thanks
 
