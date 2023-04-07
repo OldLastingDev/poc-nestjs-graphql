@@ -1,0 +1,66 @@
+{
+  "name": "@tutorial/api",
+  "version": "0.0.1",
+  "description": "",
+  "author": "OldBigBuddha<contact@oldbigbuddha.dev>",
+  "private": true,
+  "license": "Apache-2.0",
+  "engines": {
+    "node": "18"
+  },
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "nest start",
+    "dev": "nest start --watch",
+    "debug": "nest start --debug --watch",
+    "start:prod": "node dist/main",
+    "codegen": "bash ./scripts/codegen.sh",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
+  },
+  "dependencies": {
+    "@graphql-tools/utils": "9.2.1",
+    "@nestjs/apollo": "11.0.4",
+    "@nestjs/common": "9.3.12",
+    "@nestjs/core": "9.3.12",
+    "@nestjs/graphql": "11.0.4",
+    "@nestjs/mapped-types": "*",
+    "@nestjs/platform-express": "9.3.12",
+    "@prisma/client": "4.12.0",
+    "reflect-metadata": "0.1.13",
+    "rxjs": "7.8.0",
+    "uuid": "9.0.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "9.3.0",
+    "@nestjs/schematics": "9.0.4",
+    "@nestjs/testing": "9.3.12",
+    "@tsconfig/node18": "1.0.1",
+    "@types/express": "4.17.17",
+    "@types/uuid": "9.0.1",
+    "prisma": "4.12.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}

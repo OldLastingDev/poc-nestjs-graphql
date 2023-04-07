@@ -1,60 +1,51 @@
-# NestJS tutorial for GraphQL API
-## Description
+# [PoC] NestJS & Next.js
 
-Nestjs のサンプルを基に GraphQL API を実装するために色々試験的に実装しているリポジトリです。
+このリポジトリは、以下の技術スタックを試すためにあります:
 
-**Goal: TODO アプリっぽいことを実現するための GraphQL API を作る**
+* NestJS
+* Next.js
+* GraphQL
+  * Apollo Server & Client
+* Prisma
+* Firebase Authentication
+* npm workspace
 
-## Feature
+## 全体のディレクトリ構成
 
-TBD
+`/packages` 配下に monorepo で管理したいソースコードが揃っています。 npm workspace を活用しているため、各ディレクトリで依存ライブラリをインストールする必要はありません。
 
-## モジュールについて
+## 開発手順
 
-このプロジェクトでは扱うデータ単位でモジュールを作成しています。作成時現在の設計では UserModule と TaskModule が相互に機能しあう想定ではありますが、うまく機能するかは今後実装しながら考えます。
+### 依存ライブラリのインストール
 
-## TypeScript のバージョンについて
+開発を始まる前に、本リポジトリが依存しているライブラリをインストールします。
 
-現在このプロジェクトでは v4 系を扱っていますが、最新は v5 です。[NestJS 本体がまだ v5 に対応できていないよう](https://github.com/nestjs/nest/pull/11293)なので、対応され次第本プロジェクトでも v5 を採用します。
-
-## Installation
-
-```bash
-$ npm install
+```sh
+$npm install
 ```
 
-## Generate code from GraphQL schema
+これで `/packages` 配下のプロジェクトが依存しているライブラリがすべてインストールされます。
 
-このリポジトリでは Schema First 手法を採用しています。開発前に必ず以下のコマンドを実行して型定義を最新にしてください。
+### API
 
-```bash
-$ npm run codegen
+現段階ではローカル環境向けの DB として SQLite3 を採用しているため、まずはマイグレーションを行います。
+
+```sh
+$npx -w @tutorial/api prisma migrate dev
 ```
 
-## Running the app
+続いて、本プロジェクトでは "Schema first" を採用しているため、GraphQL Schema から型情報を生成します。
 
-```bash
-# development(watch mode)
-$ npm run dev
+```sh
+$npm run -w @tutorial/api codegen
 ```
 
-## Test
+ここまでくれば準備完了なので、以下のコマンドで開発サーバーを起動します。
 
-E2E テストは REST API のサンプルから GraphQL へ変更したのでまったく動かないと思います。
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```sh
+$npm run -w @tutorial/api dev
 ```
 
-## Special thanks
+### Web Front
 
-* [Nestjs](https://docs.nestjs.com/)
-* [GraphQL Tutorial](https://docs.nestjs.com/graphql/quick-start)
-* [12-graphql-schema-first](https://github.com/nestjs/nest/tree/master/sample/12-graphql-schema-first)
+未実装
