@@ -1,8 +1,8 @@
 import { IEntity } from 'src/interfaces/IEntity';
-import { generateUuid } from 'src/libs/uuid';
+import { ULID, generateUlid } from 'src/libs/ulid';
 
 type EssentialProperties = {
-  readonly uuid: string;
+  readonly ulid: ULID;
   name: string;
   age: number;
 };
@@ -23,7 +23,7 @@ export class UserEntity implements IEntity {
 
   static new({ name, age }: CreateInput): UserEntity {
     const properties: AllProperties = {
-      uuid: generateUuid(),
+      ulid: generateUlid(),
       name: name,
       age: age,
     };
@@ -42,8 +42,8 @@ export class UserEntity implements IEntity {
     return this.properties.id;
   }
 
-  get uuid(): string {
-    return this.properties.uuid;
+  get ulid(): ULID {
+    return this.properties.ulid;
   }
 
   get name(): string {

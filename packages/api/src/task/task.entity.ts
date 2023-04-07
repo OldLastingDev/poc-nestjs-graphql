@@ -1,10 +1,12 @@
-import { generateUuid } from 'src/libs/uuid';
+import { generateUlid } from 'src/libs/ulid';
+
 import type { UserEntity } from 'src/user/user.entity';
 import type { IEntity } from 'src/interfaces/IEntity';
+import type { ULID } from 'src/libs/ulid';
 
 type Properties = {
   readonly id?: number;
-  readonly uuid: string;
+  readonly ulid: ULID;
   title: string;
   description: string;
   done: boolean;
@@ -29,7 +31,7 @@ export class TaskEntity implements IEntity {
   constructor({ title, description, deadlineAt, ownerId }: CreateInput) {
     const now = new Date();
     this.properties = {
-      uuid: generateUuid(),
+      ulid: generateUlid(),
       title: title,
       description: description,
       done: false,
@@ -52,8 +54,8 @@ export class TaskEntity implements IEntity {
     return this.properties.id;
   }
 
-  get uuid(): string {
-    return this.properties.uuid;
+  get ulid(): ULID {
+    return this.properties.ulid;
   }
 
   get title(): string {
