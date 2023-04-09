@@ -11,7 +11,6 @@
 export class CreateTaskInput {
     title: string;
     description: string;
-    done: boolean;
     deadlineAt?: Nullable<number>;
 }
 
@@ -37,8 +36,6 @@ export class Task {
     description: string;
     done: boolean;
     deadlineAt?: Nullable<number>;
-    createdAt: number;
-    updatedAt: number;
 }
 
 export abstract class IQuery {

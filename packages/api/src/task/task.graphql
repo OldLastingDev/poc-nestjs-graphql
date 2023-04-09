@@ -23,12 +23,6 @@ type Task {
 
   """ タスクの締め切り日時(UNIX時間) """
   deadlineAt: Int
-
-  """ タスクの作成日時(UNIX時間) """
-  createdAt: Int!
-
-  """ タスクの最終更新日時(UNIX時間) """
-  updatedAt: Int!
 }
 
 """ タスクの作成に必要な情報 """
@@ -41,9 +35,6 @@ input CreateTaskInput {
 
   """ タスクの詳細 """
   description: String!
-
-  """ タスクが完了したか否か """
-  done: Boolean!
 
   """ タスクの締め切り日時(UNIX時間) """
   deadlineAt: Int
