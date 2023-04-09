@@ -15,20 +15,14 @@ type Task {
   """ タスクが完了したか否か """
   done: Boolean!
 
-  """
-  タスクを作成したユーザー
-  現時点では自分のタスクのみを管理する前提なので、Asignee や Reporter の区別は必要ない
-  """
-  owner: User!
+  # """
+  # タスクを作成したユーザー
+  # 現時点では自分のタスクのみを管理する前提なので、Asignee や Reporter の区別は必要ない
+  # """
+  # owner: User!
 
   """ タスクの締め切り日時(UNIX時間) """
   deadlineAt: Int
-
-  """ タスクの作成日時(UNIX時間) """
-  createdAt: Int!
-
-  """ タスクの最終更新日時(UNIX時間) """
-  updatedAt: Int!
 }
 
 """ タスクの作成に必要な情報 """
@@ -41,15 +35,6 @@ input CreateTaskInput {
 
   """ タスクの詳細 """
   description: String!
-
-  """ タスクが完了したか否か """
-  done: Boolean!
-
-  """
-  タスクを作成したユーザーの ID
-  現時点では自分のタスクのみを管理する前提なので、Asignee や Reporter の区別は必要ない
-  """
-  ownerId: ID!
 
   """ タスクの締め切り日時(UNIX時間) """
   deadlineAt: Int

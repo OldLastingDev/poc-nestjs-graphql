@@ -8,9 +8,6 @@ export class TaskPresenter {
       title: entity.title,
       description: entity.description,
       done: entity.done,
-      createdAt: Number(entity.createdAt),
-      updatedAt: Number(entity.updatedAt),
     };
   }
-  // TODO(enhancement) toResponseWithOwner
 }
