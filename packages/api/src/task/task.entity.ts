@@ -43,7 +43,7 @@ export class TaskEntity implements IEntity {
   private constructor(private readonly properties: AllProperties) {}
 
   hasPerpetuated(): boolean {
-    throw new Error('Method not implemented.');
+    return this.properties.id !== undefined;
   }
 
   get _id(): number {
