@@ -7,7 +7,7 @@ import { ULID } from 'src/libs/ulid';
 export class TaskService {
   private tasks: TaskEntity[] = [];
   async create(input: CreateTaskInput): Promise<TaskEntity> {
-    const entity = new TaskEntity({
+    const entity = TaskEntity.new({
       title: input.title,
       description: input.description,
       deadlineAt: input.deadlineAt ? new Date(input.deadlineAt) : undefined,

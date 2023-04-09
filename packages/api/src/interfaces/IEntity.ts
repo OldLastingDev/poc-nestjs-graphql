@@ -12,6 +12,7 @@ export interface IEntity {
   readonly ulid: ULID;
   readonly createdAt: Date;
   readonly updatedAt: Date;
+  readonly deletedAt: Date | undefined;
 
   hasPerpetuated(): boolean;
 
