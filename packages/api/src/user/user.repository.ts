@@ -3,9 +3,10 @@ import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserEntity } from './user.entity';
 import { ULID, asULID } from 'src/libs/ulid';
+import { IRepository } from 'src/interfaces/IRepository';
 
 @Injectable()
-export class UserRepository {
+export class UserRepository implements IRepository<UserEntity> {
   constructor(private readonly prisma: PrismaService) {}
 
   // TODO(enhancement): pagination
