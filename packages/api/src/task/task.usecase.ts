@@ -63,7 +63,7 @@ export class TaskUsecase {
     return await this.taskRepository.save(entity);
   }
 
-  async remove(entity: TaskEntity): Promise<void> {
+  async trash(entity: TaskEntity): Promise<void> {
     entity.trash();
 
     await this.taskRepository.save(entity);
