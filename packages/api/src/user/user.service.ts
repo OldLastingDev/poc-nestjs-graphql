@@ -3,11 +3,10 @@ import { UserEntity } from './user.entity';
 
 import type { CreateUserInput, UpdateUserInput } from 'src/graphql.autogen';
 import { UserUsecase } from './user.usecase';
+import { ULID } from 'src/libs/ulid';
 
 @Injectable()
 export class UserService {
-  private users: UserEntity[] = [];
-
   constructor(private readonly userUsecase: UserUsecase) {}
 
   async create(createUserInput: CreateUserInput): Promise<UserEntity> {
@@ -21,20 +20,20 @@ export class UserService {
     return await this.userUsecase.findAll();
   }
 
-  async findByUuid(uuid: string): Promise<UserEntity | null> {
-    return await this.userUsecase.findByUuid(uuid);
+  async findByUuid(ulid: ULID): Promise<UserEntity | null> {
+    return await this.userUsecase.findByUlid(ulid);
   }
 
   /**
    * @throws 指定した UUID の User が存在しなかった場合
    */
   async update(
-    uuid: string,
+    ulid: ULID,
     updateUserInput: UpdateUserInput,
   ): Promise<UserEntity> {
-    const target = await this.userUsecase.findByUuid(uuid);
+    const target = await this.userUsecase.findByUlid(ulid);
 
-    if (target === null) {
+    if (target === undefined) {
       throw new Error('Not found a user');
     }
 
@@ -44,10 +43,10 @@ export class UserService {
     });
   }
 
-  async removeByUuid(uuid: string): Promise<void> {
-    const target = await this.userUsecase.findByUuid(uuid);
+  async removeByUlid(ulid: ULID): Promise<void> {
+    const target = await this.userUsecase.findByUlid(ulid);
 
-    if (target === null) {
+    if (target === undefined) {
       throw new Error('Not found a user');
     }
 

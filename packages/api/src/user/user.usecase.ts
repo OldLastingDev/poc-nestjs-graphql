@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { UserRepository } from './user.repository';
+import { ULID } from 'src/libs/ulid';
 
 type InputCreateUser = {
   name: string;
@@ -22,16 +23,17 @@ export class UserUsecase {
       age: age,
     });
 
-    return await this.userRepository.create(entity);
+    return await this.userRepository.save(entity);
   }
 
   // TODO(enhancement): pagination
   async findAll(): Promise<UserEntity[]> {
-    return this.userRepository.findAll();
+    return await this.userRepository.findAll();
   }
 
-  async findByUuid(uuid: string): Promise<UserEntity | null> {
-    return this.userRepository.findByUuid(uuid);
+  async findByUlid(ulid: ULID): Promise<UserEntity | undefined> {
+    // TODO(enhancement): undefined ならエラーを投げる
+    return await this.userRepository.findByUlid(ulid);
   }
 
   async update(
@@ -43,12 +45,12 @@ export class UserUsecase {
       age: age,
     });
 
-    return this.userRepository.update(entity);
+    return await this.userRepository.save(entity);
   }
 
   async remove(entity: UserEntity): Promise<void> {
     entity.trash();
 
-    await this.userRepository.update(entity);
+    await this.userRepository.save(entity);
   }
 }
