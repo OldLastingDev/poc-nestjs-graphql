@@ -14,7 +14,7 @@ export type ULID = string & {
 
 // fork from https://regex101.com/library/ik6xZx
 // see also: https://github.com/ulid/spec#encoding
-const ULID_REGEXP = /[0-7][0-9A-HJKMNP-TV-Z]{25}/gm;
+const ULID_REGEXP = /^[0-9A-HJKMNP-TV-Z]{26}$/;
 
 export function generateUlid(): ULID {
   return ulid() as unknown as ULID;

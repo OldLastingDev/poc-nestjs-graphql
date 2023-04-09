@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserEntity } from './user.entity';
-import { asULID } from 'src/libs/ulid';
+import { ULID, asULID } from 'src/libs/ulid';
+import { IRepository } from 'src/interfaces/IRepository';
 
 @Injectable()
-export class UserRepository {
+export class UserRepository implements IRepository<UserEntity> {
   constructor(private readonly prisma: PrismaService) {}
 
   // TODO(enhancement): pagination
@@ -18,28 +19,36 @@ export class UserRepository {
       },
     });
 
-    return models.map(this.toEntity);
+    return models.map(toEntity);
   }
 
-  async findByUuid(uuid: string): Promise<UserEntity | null> {
+  async findByUlid(ulid: ULID): Promise<UserEntity | undefined> {
     try {
       // findFirstOrThrow だと where がユニークなもの以外指定できない
       const model = await this.prisma.user.findFirstOrThrow({
         where: {
-          uuid: uuid,
+          uuid: ulid,
           deletedAt: {
             equals: null,
           },
         },
       });
 
-      return this.toEntity(model);
+      return toEntity(model);
     } catch {
-      return null;
+      return undefined;
     }
   }
 
-  async create(entity: UserEntity): Promise<UserEntity> {
+  async save(entity: UserEntity): Promise<UserEntity> {
+    if (entity.hasPerpetuated()) {
+      return await this.update(entity);
+    }
+
+    return await this.create(entity);
+  }
+
+  private async create(entity: UserEntity): Promise<UserEntity> {
     const model = await this.prisma.user.create({
       data: {
         uuid: entity.ulid,
@@ -48,10 +57,10 @@ export class UserRepository {
       },
     });
 
-    return this.toEntity(model);
+    return toEntity(model);
   }
 
-  async update(entity: UserEntity): Promise<UserEntity> {
+  private async update(entity: UserEntity): Promise<UserEntity> {
     const model = await this.prisma.user.update({
       where: {
         id: entity._id,
@@ -63,10 +72,11 @@ export class UserRepository {
       },
     });
 
-    return this.toEntity(model);
+    return toEntity(model);
   }
+}
 
-  private toEntity(model: User): UserEntity {
+function toEntity(model: User): UserEntity {
     const entity = UserEntity.factoryWithAllProperties({
       id: model.id,
       ulid: asULID(model.uuid),
@@ -79,4 +89,3 @@ export class UserRepository {
 
     return entity;
   }
-}

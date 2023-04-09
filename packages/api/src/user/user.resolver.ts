@@ -6,6 +6,7 @@ import type {
 } from 'src/graphql.autogen';
 import { UserPresenter } from './user.presenter';
 import { UserService } from './user.service';
+import { asULID } from 'src/libs/ulid';
 
 @Resolver('User')
 export class UserResolver {
@@ -27,10 +28,12 @@ export class UserResolver {
   }
 
   @Query('user')
-  async findByUuid(@Args('id') id: string): Promise<User | null> {
-    const entity = await this.service.findByUuid(id);
-    if (entity === null) {
-      return null;
+  async findByUlid(@Args('id') id: string): Promise<User | undefined> {
+    const ulid = asULID(id);
+    const entity = await this.service.findByUlid(ulid);
+
+    if (entity === undefined) {
+      return undefined;
     }
 
     return this.presenter.toResponse(entity);
@@ -38,16 +41,18 @@ export class UserResolver {
 
   @Mutation('updateUser')
   async update(
-    @Args('id') uuid: string,
+    @Args('id') id: string,
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
   ): Promise<User> {
-    const entity = await this.service.update(uuid, updateUserInput);
+    const ulid = asULID(id);
+    const entity = await this.service.update(ulid, updateUserInput);
     return this.presenter.toResponse(entity);
   }
 
   @Mutation('removeUser')
-  async remove(@Args('id') uuid: string): Promise<boolean> {
-    await this.service.removeByUuid(uuid);
+  async remove(@Args('id') id: string): Promise<boolean> {
+    const ulid = asULID(id);
+    await this.service.removeByUlid(ulid);
     return true;
   }
 }
