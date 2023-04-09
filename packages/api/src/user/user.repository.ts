@@ -27,7 +27,7 @@ export class UserRepository implements IRepository<UserEntity> {
       // findFirstOrThrow だと where がユニークなもの以外指定できない
       const model = await this.prisma.user.findFirstOrThrow({
         where: {
-          uuid: ulid,
+          ulid: ulid,
           deletedAt: {
             equals: null,
           },
@@ -51,7 +51,7 @@ export class UserRepository implements IRepository<UserEntity> {
   private async create(entity: UserEntity): Promise<UserEntity> {
     const model = await this.prisma.user.create({
       data: {
-        uuid: entity.ulid,
+        ulid: entity.ulid,
         name: entity.name,
         age: entity.age,
       },
@@ -79,7 +79,7 @@ export class UserRepository implements IRepository<UserEntity> {
 function toEntity(model: User): UserEntity {
     const entity = UserEntity.factoryWithAllProperties({
       id: model.id,
-      ulid: asULID(model.uuid),
+      ulid: asULID(model.ulid),
       name: model.name,
       age: model.age,
       createdAt: model.createdAt,
