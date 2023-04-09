@@ -1,36 +1,55 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { TaskService } from './task.service';
-import { CreateTaskInput, UpdateTaskInput } from 'src/graphql.autogen';
+import { CreateTaskInput, Task, UpdateTaskInput } from 'src/graphql.autogen';
+import { asULID } from 'src/libs/ulid';
+import { TaskPresenter } from './task.presenter';
 
 @Resolver('Task')
 export class TaskResolver {
-  constructor(private readonly taskService: TaskService) {}
+  constructor(private readonly taskService: TaskService, private readonly presenter: TaskPresenter) {}
 
   @Mutation('createTask')
-  create(@Args('createTaskInput') createTaskInput: CreateTaskInput) {
-    return this.taskService.create(createTaskInput);
+  async create(@Args('createTaskInput') createTaskInput: CreateTaskInput): Promise<Task> {
+    const entity =  await this.taskService.create(createTaskInput);
+
+    return this.presenter.toResposne(entity);
+  }
+
+  @Query('tasks')
+  async findAll(): Promise<Task[]> {
+    const entities = await this.taskService.findAll();
+
+    return entities.map(this.presenter.toResposne);
   }
 
   @Query('task')
-  findAll() {
-    return this.taskService.findAll();
-  }
+  async findOne(@Args('id') id: string): Promise<Task | null> {
+    const ulid = asULID(id);
+    const entity = await this.taskService.findByUlid(ulid);
 
-  @Query('task')
-  findOne(@Args('id') id: string) {
-    return this.taskService.findByUuid(id);
+    if (entity === null) {
+      return null;
+    }
+
+    return this.presenter.toResposne(entity);
   }
 
   @Mutation('updateTask')
-  update(
+  async update(
     @Args('id') id: string,
     @Args('updateTaskInput') updateTaskInput: UpdateTaskInput,
-  ) {
-    return this.taskService.update(id, updateTaskInput);
+  ): Promise<Task> {
+    const ulid = asULID(id);
+    const entity = await this.taskService.update(ulid, updateTaskInput);
+
+    return this.presenter.toResposne(entity);
   }
 
   @Mutation('removeTask')
-  remove(@Args('id') id: string) {
-    return this.taskService.remove(id);
+  async remove(@Args('id') id: string): Promise<boolean> {
+    const ulid = asULID(id);
+    await this.taskService.removeByUlid(ulid);
+
+    return true;
   }
 }

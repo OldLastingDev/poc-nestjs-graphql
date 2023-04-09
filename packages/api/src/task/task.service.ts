@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTaskInput, UpdateTaskInput } from 'src/graphql.autogen';
 import { TaskEntity } from './task.entity';
+import { ULID } from 'src/libs/ulid';
 
 @Injectable()
 export class TaskService {
@@ -20,8 +21,8 @@ export class TaskService {
     return this.tasks;
   }
 
-  async findByUuid(id: string): Promise<TaskEntity | null> {
-    const targetIndex = this.tasks.findIndex((task) => task.ulid === id);
+  async findByUlid(ulid: ULID): Promise<TaskEntity | null> {
+    const targetIndex = this.tasks.findIndex((task) => task.ulid === ulid);
     if (targetIndex === -1) {
       return null;
     }
@@ -29,10 +30,10 @@ export class TaskService {
     return this.tasks[targetIndex];
   }
 
-  async update(id: string, input: UpdateTaskInput): Promise<TaskEntity | null> {
-    const targetIndex = this.tasks.findIndex((task) => task.ulid === id);
+  async update(ulid: ULID, input: UpdateTaskInput): Promise<TaskEntity> {
+    const targetIndex = this.tasks.findIndex((task) => task.ulid === ulid);
     if (targetIndex === -1) {
-      return null;
+      throw new Error(`Not found a task: ${ulid}`);
     }
 
     const entity = this.tasks[targetIndex];
@@ -46,7 +47,7 @@ export class TaskService {
     return entity;
   }
 
-  async remove(id: string): Promise<void> {
-    this.tasks = this.tasks.filter((task) => task.ulid !== id);
+  async removeByUlid(ulid: ULID): Promise<void> {
+    this.tasks = this.tasks.filter((task) => task.ulid !== ulid);
   }
 }

@@ -12,5 +12,4 @@ export class TaskPresenter {
       updatedAt: Number(entity.updatedAt),
     };
   }
-  // TODO(enhancement) toResponseWithOwner
 }
