@@ -35,6 +35,15 @@ export class TaskService {
     return await this.usecase.did(entity);
   }
 
+  async undoByUlid(ulid: ULID): Promise<TaskEntity> {
+    const entity = await this.usecase.findByUlid(ulid);
+    if (entity === undefined) {
+      throw new Error(`Not found a task: ${ulid}`);
+    }
+
+    return await this.usecase.undo(entity);
+  }
+
   async update(ulid: ULID, input: UpdateTaskInput): Promise<TaskEntity> {
     const entity = await this.usecase.findByUlid(ulid);
     if (entity === undefined) {

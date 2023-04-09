@@ -42,6 +42,14 @@ export class TaskResolver {
     return this.presenter.toResposne(entity);
   }
 
+  @Mutation('undoTask')
+  async undoTask(@Args('id') id: string): Promise<Task> {
+    const ulid = asULID(id);
+    const entity = await this.service.undoByUlid(ulid);
+
+    return this.presenter.toResposne(entity);
+  }
+
   @Mutation('updateTask')
   async update(
     @Args('id') id: string,
