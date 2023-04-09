@@ -12,7 +12,6 @@ export class CreateTaskInput {
     title: string;
     description: string;
     done: boolean;
-    ownerId: string;
     deadlineAt?: Nullable<number>;
 }
 
@@ -37,7 +36,6 @@ export class Task {
     title: string;
     description: string;
     done: boolean;
-    owner: User;
     deadlineAt?: Nullable<number>;
     createdAt: number;
     updatedAt: number;
