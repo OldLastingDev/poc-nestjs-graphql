@@ -32,6 +32,10 @@ export class UserResolver {
     const ulid = asULID(id);
     const entity = await this.service.findByUlid(ulid);
 
+    if (entity === undefined) {
+      return undefined;
+    }
+
     return this.presenter.toResponse(entity);
   }
 

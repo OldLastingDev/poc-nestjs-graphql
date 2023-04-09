@@ -32,7 +32,6 @@ export class UserUsecase {
   }
 
   async findByUlid(ulid: ULID): Promise<UserEntity | undefined> {
-    // TODO(enhancement): undefined ならエラーを投げる
     return await this.userRepository.findByUlid(ulid);
   }
 
