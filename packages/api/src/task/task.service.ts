@@ -2,52 +2,67 @@ import { Injectable } from '@nestjs/common';
 import { CreateTaskInput, UpdateTaskInput } from 'src/graphql.autogen';
 import { TaskEntity } from './task.entity';
 import { ULID } from 'src/libs/ulid';
+import { TaskUsecase } from './task.usecase';
 
 @Injectable()
 export class TaskService {
-  private tasks: TaskEntity[] = [];
+  constructor(private readonly usecase: TaskUsecase) {}
+
   async create(input: CreateTaskInput): Promise<TaskEntity> {
-    const entity = new TaskEntity({
+    const entity = await this.usecase.create({
       title: input.title,
       description: input.description,
-      deadlineAt: input.deadlineAt ? new Date(input.deadlineAt) : undefined,
-    });
-    this.tasks.push(entity);
-
+      deadlineAt: input.deadlineAt === undefined ? undefined : new Date(input.deadlineAt),
+    })
     return entity;
   }
 
   async findAll(): Promise<TaskEntity[]> {
-    return this.tasks;
+    return await this.usecase.findAll();
   }
 
-  async findByUlid(ulid: ULID): Promise<TaskEntity | null> {
-    const targetIndex = this.tasks.findIndex((task) => task.ulid === ulid);
-    if (targetIndex === -1) {
-      return null;
-    }
-
-    return this.tasks[targetIndex];
-  }
-
-  async update(ulid: ULID, input: UpdateTaskInput): Promise<TaskEntity> {
-    const targetIndex = this.tasks.findIndex((task) => task.ulid === ulid);
-    if (targetIndex === -1) {
-      throw new Error(`Not found a task: ${ulid}`);
-    }
-
-    const entity = this.tasks[targetIndex];
-    entity.update({
-      title: input.title,
-      description: input.description,
-      deadlineAt: input.deadlineAt ? new Date(input.deadlineAt) : undefined,
-    });
-    this.tasks[targetIndex] = entity;
-
+  async findByUlid(ulid: ULID): Promise<TaskEntity | undefined> {
+    const entity = await this.usecase.findByUlid(ulid);
     return entity;
   }
 
+  async didByUlid(ulid: ULID): Promise<TaskEntity> {
+    const entity = await this.usecase.findByUlid(ulid);
+    if (entity === undefined) {
+      throw new Error(`Not found a task: ${ulid}`);
+    }
+
+    return await this.usecase.did(entity);
+  }
+
+  async undoByUlid(ulid: ULID): Promise<TaskEntity> {
+    const entity = await this.usecase.findByUlid(ulid);
+    if (entity === undefined) {
+      throw new Error(`Not found a task: ${ulid}`);
+    }
+
+    return await this.usecase.undo(entity);
+  }
+
+  async update(ulid: ULID, input: UpdateTaskInput): Promise<TaskEntity> {
+    const entity = await this.usecase.findByUlid(ulid);
+    if (entity === undefined) {
+      throw new Error(`Not found a task: ${ulid}`);
+    }
+
+    return await this.usecase.update(entity, {
+      title: input.title,
+      description: input.description,
+      deadlineAt: input.deadlineAt ? new Date(input.deadlineAt) : undefined,
+    })
+  }
+
   async removeByUlid(ulid: ULID): Promise<void> {
-    this.tasks = this.tasks.filter((task) => task.ulid !== ulid);
+    const entity = await this.usecase.findByUlid(ulid);
+    if (entity === undefined) {
+      throw new Error(`Not found a task: ${ulid}`);
+    }
+
+    await this.usecase.trash(entity);
   }
 }

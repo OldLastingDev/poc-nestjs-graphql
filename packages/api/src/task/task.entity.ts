@@ -3,7 +3,7 @@ import { generateUlid } from 'src/libs/ulid';
 import type { IEntity } from 'src/interfaces/IEntity';
 import type { ULID } from 'src/libs/ulid';
 
-type Properties = {
+type AllProperties = {
   readonly id?: number;
   readonly ulid: ULID;
   title: string;
@@ -16,18 +16,16 @@ type Properties = {
 };
 
 type CreateInput = Pick<
-  Properties,
+  AllProperties,
   'title' | 'description' | 'deadlineAt'
 >;
 
-type UpdateInput = Pick<Properties, 'title' | 'description' | 'deadlineAt'>;
+type UpdateInput = Pick<AllProperties, 'title' | 'description' | 'deadlineAt'>;
 
 export class TaskEntity implements IEntity {
-  private readonly properties: Properties;
-
-  constructor({ title, description, deadlineAt }: CreateInput) {
+  static new({ title, description, deadlineAt }: CreateInput): TaskEntity {
     const now = new Date();
-    this.properties = {
+    return new TaskEntity({
       ulid: generateUlid(),
       title: title,
       description: description,
@@ -35,11 +33,17 @@ export class TaskEntity implements IEntity {
       deadlineAt: deadlineAt,
       createdAt: now,
       updatedAt: now,
-    };
+    });
   }
 
+  static factoryWithAllProperties(properties: AllProperties): TaskEntity {
+    return new TaskEntity(properties);
+  }
+
+  private constructor(private readonly properties: AllProperties) {}
+
   hasPerpetuated(): boolean {
-    throw new Error('Method not implemented.');
+    return this.properties.id !== undefined;
   }
 
   get _id(): number {
@@ -80,6 +84,10 @@ export class TaskEntity implements IEntity {
 
   get updatedAt(): Date {
     return this.properties.updatedAt;
+  }
+
+  get deletedAt(): Date | undefined {
+    return this.properties.deletedAt;
   }
 
   private throwNeverBeenPerpetuatedError(): never {

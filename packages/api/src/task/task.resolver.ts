@@ -6,18 +6,18 @@ import { TaskPresenter } from './task.presenter';
 
 @Resolver('Task')
 export class TaskResolver {
-  constructor(private readonly taskService: TaskService, private readonly presenter: TaskPresenter) {}
+  constructor(private readonly service: TaskService, private readonly presenter: TaskPresenter) {}
 
   @Mutation('createTask')
   async create(@Args('createTaskInput') createTaskInput: CreateTaskInput): Promise<Task> {
-    const entity =  await this.taskService.create(createTaskInput);
+    const entity =  await this.service.create(createTaskInput);
 
     return this.presenter.toResposne(entity);
   }
 
   @Query('tasks')
   async findAll(): Promise<Task[]> {
-    const entities = await this.taskService.findAll();
+    const entities = await this.service.findAll();
 
     return entities.map(this.presenter.toResposne);
   }
@@ -25,11 +25,27 @@ export class TaskResolver {
   @Query('task')
   async findOne(@Args('id') id: string): Promise<Task | null> {
     const ulid = asULID(id);
-    const entity = await this.taskService.findByUlid(ulid);
+    const entity = await this.service.findByUlid(ulid);
 
     if (entity === null) {
       return null;
     }
+
+    return this.presenter.toResposne(entity);
+  }
+
+  @Mutation('didTask')
+  async didTask(@Args('id') id: string): Promise<Task> {
+    const ulid = asULID(id);
+    const entity = await this.service.didByUlid(ulid);
+
+    return this.presenter.toResposne(entity);
+  }
+
+  @Mutation('undoTask')
+  async undoTask(@Args('id') id: string): Promise<Task> {
+    const ulid = asULID(id);
+    const entity = await this.service.undoByUlid(ulid);
 
     return this.presenter.toResposne(entity);
   }
@@ -40,7 +56,7 @@ export class TaskResolver {
     @Args('updateTaskInput') updateTaskInput: UpdateTaskInput,
   ): Promise<Task> {
     const ulid = asULID(id);
-    const entity = await this.taskService.update(ulid, updateTaskInput);
+    const entity = await this.service.update(ulid, updateTaskInput);
 
     return this.presenter.toResposne(entity);
   }
@@ -48,7 +64,7 @@ export class TaskResolver {
   @Mutation('removeTask')
   async remove(@Args('id') id: string): Promise<boolean> {
     const ulid = asULID(id);
-    await this.taskService.removeByUlid(ulid);
+    await this.service.removeByUlid(ulid);
 
     return true;
   }

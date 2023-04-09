@@ -80,9 +80,13 @@ type Mutation {
 
   """
   タスクを完了状態にする
-  TODO(enhancement): タスクを未完了状態にする mutation を実装する
   """
   didTask(id: ID!): Task!
+
+  """
+  タスクを未完了状態にする
+  """
+  undoTask(id: ID!): Task!
 
   """ タスク論理削除 """
   removeTask(id: ID!): Boolean!

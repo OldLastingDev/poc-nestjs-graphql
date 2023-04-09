@@ -55,6 +55,8 @@ export abstract class IMutation {
 
     abstract didTask(id: string): Task | Promise<Task>;
 
+    abstract undoTask(id: string): Task | Promise<Task>;
+
     abstract removeTask(id: string): boolean | Promise<boolean>;
 
     abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;

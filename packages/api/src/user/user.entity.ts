@@ -70,11 +70,7 @@ export class UserEntity implements IEntity {
     return this.properties.updatedAt;
   }
 
-  get deletedAt(): Date | null {
-    if (this.properties.deletedAt === undefined) {
-      return null;
-    }
-
+  get deletedAt(): Date | undefined {
     return this.properties.deletedAt;
   }
 
