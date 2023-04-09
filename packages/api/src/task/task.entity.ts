@@ -1,6 +1,5 @@
 import { generateUlid } from 'src/libs/ulid';
 
-import type { UserEntity } from 'src/user/user.entity';
 import type { IEntity } from 'src/interfaces/IEntity';
 import type { ULID } from 'src/libs/ulid';
 
@@ -10,8 +9,6 @@ type Properties = {
   title: string;
   description: string;
   done: boolean;
-  ownerId: string;
-  owner?: UserEntity;
   deadlineAt?: Date;
   readonly createdAt: Date;
   updatedAt: Date;
@@ -20,7 +17,7 @@ type Properties = {
 
 type CreateInput = Pick<
   Properties,
-  'title' | 'description' | 'ownerId' | 'deadlineAt'
+  'title' | 'description' | 'deadlineAt'
 >;
 
 type UpdateInput = Pick<Properties, 'title' | 'description' | 'deadlineAt'>;
@@ -28,14 +25,13 @@ type UpdateInput = Pick<Properties, 'title' | 'description' | 'deadlineAt'>;
 export class TaskEntity implements IEntity {
   private readonly properties: Properties;
 
-  constructor({ title, description, deadlineAt, ownerId }: CreateInput) {
+  constructor({ title, description, deadlineAt }: CreateInput) {
     const now = new Date();
     this.properties = {
       ulid: generateUlid(),
       title: title,
       description: description,
       done: false,
-      ownerId: ownerId,
       deadlineAt: deadlineAt,
       createdAt: now,
       updatedAt: now,
@@ -68,22 +64,6 @@ export class TaskEntity implements IEntity {
 
   get done(): boolean {
     return this.properties.done;
-  }
-
-  get ownerId(): string {
-    return this.properties.ownerId;
-  }
-
-  /**
-   * Task を作成したユーザー
-   * @throws User を Eager loading していないとエラーが発生する
-   */
-  get owner(): UserEntity {
-    if (this.properties.owner === undefined) {
-      throw new Error('No loaded entity');
-    }
-
-    return this.properties.owner;
   }
 
   get deadlineAt(): Date | null {
