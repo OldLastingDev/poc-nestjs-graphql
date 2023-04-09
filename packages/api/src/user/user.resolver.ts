@@ -28,9 +28,9 @@ export class UserResolver {
   }
 
   @Query('user')
-  async findByUuid(@Args('id') id: string): Promise<User | undefined> {
+  async findByUlid(@Args('id') id: string): Promise<User | undefined> {
     const ulid = asULID(id);
-    const entity = await this.service.findByUuid(ulid);
+    const entity = await this.service.findByUlid(ulid);
 
     return this.presenter.toResponse(entity);
   }

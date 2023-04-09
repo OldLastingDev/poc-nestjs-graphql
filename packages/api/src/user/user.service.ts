@@ -20,12 +20,12 @@ export class UserService {
     return await this.userUsecase.findAll();
   }
 
-  async findByUuid(ulid: ULID): Promise<UserEntity | null> {
+  async findByUlid(ulid: ULID): Promise<UserEntity | null> {
     return await this.userUsecase.findByUlid(ulid);
   }
 
   /**
-   * @throws 指定した UUID の User が存在しなかった場合
+   * @throws 指定した ULID の User が存在しなかった場合
    */
   async update(
     ulid: ULID,
