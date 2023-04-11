@@ -8,7 +8,7 @@ services:
 
     volumes:
       - ../..:/workspaces:cached
-
+      - node_modules:/workspaces/node_modules:cached
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
@@ -21,6 +21,7 @@ services:
   db:
     image: mariadb:11.0.1-rc-jammy
     restart: unless-stopped
+
     volumes:
       - mariadb-data:/var/lib/mysql
     environment:
@@ -33,4 +34,6 @@ services:
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
 volumes:
-  mariadb-data:
+  mariadb-data: {}
+  node_modules: {}
+
