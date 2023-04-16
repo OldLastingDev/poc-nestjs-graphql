@@ -8,6 +8,8 @@ async function bootstrap() {
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
 
-  await app.listen(3000);
+  // TODO(enhancement): split into .env
+  const PORT = 3001; // 3000 would be used by frontend
+  await app.listen(PORT);
 }
 bootstrap();
