@@ -4,18 +4,23 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { ULID, asULID } from 'src/libs/ulid';
 import { IRepository } from 'src/interfaces/IRepository';
 import { TaskEntity } from './task.entity';
+import { UserEntity } from 'src/user/user.entity';
 
 @Injectable()
 export class TaskRepository implements IRepository<TaskEntity> {
   constructor(private readonly prisma: PrismaService) {}
 
   // TODO(enhancement): pagination
-  async findAll(): Promise<TaskEntity[]> {
+  async findAllBelongingToUser(owner: UserEntity): Promise<TaskEntity[]> {
     const models = await this.prisma.task.findMany({
       where: {
+        ownerId: owner._id,
         deletedAt: {
           equals: null,
         },
+      },
+      include: {
+        owner: true,
       },
     });
 
@@ -56,6 +61,7 @@ export class TaskRepository implements IRepository<TaskEntity> {
         description: entity.description,
         done: entity.done,
         deadlineAt: entity.deadlineAt,
+        ownerId: entity.ownerId,
       },
     });
 
@@ -88,6 +94,7 @@ function toEntity(model: Task): TaskEntity {
     description: model.description,
     done: model.done,
     deadlineAt: model.deadlineAt,
+    ownerId: model.ownerId,
     createdAt: model.createdAt,
     updatedAt: model.updatedAt,
     deletedAt: model.deletedAt,

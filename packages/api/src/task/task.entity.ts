@@ -2,6 +2,7 @@ import { generateUlid } from 'src/libs/ulid';
 
 import type { IEntity } from 'src/interfaces/IEntity';
 import type { ULID } from 'src/libs/ulid';
+import { UserEntity } from 'src/user/user.entity';
 
 type AllProperties = {
   readonly id?: number;
@@ -10,20 +11,21 @@ type AllProperties = {
   description: string;
   done: boolean;
   deadlineAt?: Date;
+  ownerId: number;
   readonly createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
 };
 
-type CreateInput = Pick<
-  AllProperties,
-  'title' | 'description' | 'deadlineAt'
->;
+type CreateInput = Pick<AllProperties, 'title' | 'description' | 'deadlineAt'>;
 
 type UpdateInput = Pick<AllProperties, 'title' | 'description' | 'deadlineAt'>;
 
 export class TaskEntity implements IEntity {
-  static new({ title, description, deadlineAt }: CreateInput): TaskEntity {
+  static new(
+    { title, description, deadlineAt }: CreateInput,
+    owner: UserEntity,
+  ): TaskEntity {
     const now = new Date();
     return new TaskEntity({
       ulid: generateUlid(),
@@ -31,6 +33,7 @@ export class TaskEntity implements IEntity {
       description: description,
       done: false,
       deadlineAt: deadlineAt,
+      ownerId: owner._id,
       createdAt: now,
       updatedAt: now,
     });
@@ -76,6 +79,10 @@ export class TaskEntity implements IEntity {
     }
 
     return this.properties.deadlineAt;
+  }
+
+  get ownerId(): number {
+    return this.properties.ownerId;
   }
 
   get createdAt(): Date {

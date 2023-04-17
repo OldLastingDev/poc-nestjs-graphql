@@ -1,29 +1,55 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { TaskService } from './task.service';
 import { CreateTaskInput, Task, UpdateTaskInput } from 'src/graphql.autogen';
 import { asULID } from 'src/libs/ulid';
 import { TaskPresenter } from './task.presenter';
+import { UserWithoutTasks } from 'src/user/user.resolver';
+import { TaskUsecase } from './task.usecase';
+import { UserUsecase } from 'src/user/user.usecase';
+import { UserPresenter } from 'src/user/user.presenter';
+
+export type TaskWithoutOwner = Omit<Task, 'owner'>;
 
 @Resolver('Task')
 export class TaskResolver {
-  constructor(private readonly service: TaskService, private readonly presenter: TaskPresenter) {}
+  constructor(
+    private readonly service: TaskService,
+    private readonly taskPresenter: TaskPresenter,
+    private readonly userPresenter: UserPresenter,
+    private readonly taskUsecase: TaskUsecase,
+    private readonly userUsecase: UserUsecase,
+  ) {}
 
   @Mutation('createTask')
-  async create(@Args('createTaskInput') createTaskInput: CreateTaskInput): Promise<Task> {
-    const entity =  await this.service.create(createTaskInput);
+  async create(
+    @Args('createTaskInput') createTaskInput: CreateTaskInput,
+    @Args('userId') userId: string,
+  ): Promise<TaskWithoutOwner> {
+    const userUlid = asULID(userId);
+    const entity = await this.service.create(createTaskInput, userUlid);
 
-    return this.presenter.toResposne(entity);
+    return this.taskPresenter.toResposne(entity);
   }
 
   @Query('tasks')
-  async findAll(): Promise<Task[]> {
-    const entities = await this.service.findAll();
+  async findAllBelongingToUser(
+    @Args('userId') userId: string,
+  ): Promise<TaskWithoutOwner[]> {
+    const userUlid = asULID(userId);
+    const entities = await this.service.findAllBelongingToUser(userUlid);
 
-    return entities.map(this.presenter.toResposne);
+    return entities.map(this.taskPresenter.toResposne);
   }
 
   @Query('task')
-  async findOne(@Args('id') id: string): Promise<Task | null> {
+  async findOne(@Args('id') id: string): Promise<TaskWithoutOwner | null> {
     const ulid = asULID(id);
     const entity = await this.service.findByUlid(ulid);
 
@@ -31,34 +57,47 @@ export class TaskResolver {
       return null;
     }
 
-    return this.presenter.toResposne(entity);
+    return this.taskPresenter.toResposne(entity);
+  }
+
+  @ResolveField('owner')
+  async findUserByTask(@Parent() task: Task): Promise<UserWithoutTasks> {
+    // TODO(enhancement): dataloader
+    const taskUlid = asULID(task.id);
+    const taskEntity = await this.taskUsecase.findByUlid(taskUlid);
+    if (taskEntity === undefined) {
+      throw new Error(`Not found a task: ${taskUlid}`); // this error must be unreachable
+    }
+
+    const owner = await this.userUsecase.findByTask(taskEntity);
+    return this.userPresenter.toResponse(owner);
   }
 
   @Mutation('didTask')
-  async didTask(@Args('id') id: string): Promise<Task> {
+  async didTask(@Args('id') id: string): Promise<TaskWithoutOwner> {
     const ulid = asULID(id);
     const entity = await this.service.didByUlid(ulid);
 
-    return this.presenter.toResposne(entity);
+    return this.taskPresenter.toResposne(entity);
   }
 
   @Mutation('undoTask')
-  async undoTask(@Args('id') id: string): Promise<Task> {
+  async undoTask(@Args('id') id: string): Promise<TaskWithoutOwner> {
     const ulid = asULID(id);
     const entity = await this.service.undoByUlid(ulid);
 
-    return this.presenter.toResposne(entity);
+    return this.taskPresenter.toResposne(entity);
   }
 
   @Mutation('updateTask')
   async update(
     @Args('id') id: string,
     @Args('updateTaskInput') updateTaskInput: UpdateTaskInput,
-  ): Promise<Task> {
+  ): Promise<TaskWithoutOwner> {
     const ulid = asULID(id);
     const entity = await this.service.update(ulid, updateTaskInput);
 
-    return this.presenter.toResposne(entity);
+    return this.taskPresenter.toResposne(entity);
   }
 
   @Mutation('removeTask')
