@@ -61,6 +61,7 @@ export class UserResolver {
   async findAllTasksBelongingToUser(
     @Parent() user: User,
   ): Promise<TaskWithoutOwner[]> {
+    // TODO(enhancement): dataloader
     const ownerUlid = asULID(user.id);
     const owner = await this.userUsecase.findByUlid(ownerUlid);
     if (owner === undefined) {

@@ -62,6 +62,7 @@ export class TaskResolver {
 
   @ResolveField('owner')
   async findUserByTask(@Parent() task: Task): Promise<UserWithoutTasks> {
+    // TODO(enhancement): dataloader
     const taskUlid = asULID(task.id);
     const taskEntity = await this.taskUsecase.findByUlid(taskUlid);
     if (taskEntity === undefined) {
