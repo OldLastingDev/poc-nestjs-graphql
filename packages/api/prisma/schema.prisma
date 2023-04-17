@@ -25,7 +25,7 @@ model User {
   age   Int
 
   // // Relations
-  // tasks Task[]
+  tasks Task[]
 
   @@map("users")
 }
@@ -44,8 +44,8 @@ model Task {
   deadlineAt  DateTime? @map("deadline_at")
 
   // // Relations
-  // owner   User @relation(fields: [ownerId], references: [id])
-  // ownerId Int  @map("owner_id")
+  owner   User @relation(fields: [ownerId], references: [id])
+  ownerId Int  @map("owner_id")
 
   @@map("tasks")
 }
