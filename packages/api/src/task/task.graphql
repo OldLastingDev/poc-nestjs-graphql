@@ -73,7 +73,7 @@ type Query {
 
 type Mutation {
   """ タスク作成 """
-  createTask(createTaskInput: CreateTaskInput!): Task!
+  createTask(createTaskInput: CreateTaskInput!, userId: ID): Task!
 
   """ タスク更新 """
   updateTask(updateTaskInput: UpdateTaskInput!): Task!

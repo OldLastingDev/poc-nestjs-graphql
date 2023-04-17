@@ -6,11 +6,18 @@ import { TaskPresenter } from './task.presenter';
 
 @Resolver('Task')
 export class TaskResolver {
-  constructor(private readonly service: TaskService, private readonly presenter: TaskPresenter) {}
+  constructor(
+    private readonly service: TaskService,
+    private readonly presenter: TaskPresenter,
+  ) {}
 
   @Mutation('createTask')
-  async create(@Args('createTaskInput') createTaskInput: CreateTaskInput): Promise<Task> {
-    const entity =  await this.service.create(createTaskInput);
+  async create(
+    @Args('createTaskInput') createTaskInput: CreateTaskInput,
+    @Args('userId') userId: string,
+  ): Promise<Task> {
+    const userUlid = asULID(userId);
+    const entity = await this.service.create(createTaskInput, userUlid);
 
     return this.presenter.toResposne(entity);
   }

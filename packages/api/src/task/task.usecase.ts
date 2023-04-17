@@ -2,29 +2,36 @@ import { Injectable } from '@nestjs/common';
 import { TaskRepository } from './task.repository';
 import { TaskEntity } from './task.entity';
 import { ULID } from 'src/libs/ulid';
+import { UserEntity } from 'src/user/user.entity';
 
 type InputCreateTask = {
-  title: string,
-  description: string,
-  deadlineAt?: Date,
+  title: string;
+  description: string;
+  deadlineAt?: Date;
 };
 
 type InputUpdateTask = {
-  title: string,
-  description: string,
-  deadlineAt?: Date,
+  title: string;
+  description: string;
+  deadlineAt?: Date;
 };
 
 @Injectable()
 export class TaskUsecase {
   constructor(private readonly taskRepository: TaskRepository) {}
 
-  async create({ title, description, deadlineAt }: InputCreateTask): Promise<TaskEntity> {
-    const entity = TaskEntity.new({
-      title: title,
-      description: description,
-      deadlineAt: deadlineAt
-    });
+  async create(
+    { title, description, deadlineAt }: InputCreateTask,
+    owner: UserEntity,
+  ): Promise<TaskEntity> {
+    const entity = TaskEntity.new(
+      {
+        title: title,
+        description: description,
+        deadlineAt: deadlineAt,
+      },
+      owner,
+    );
 
     return await this.taskRepository.save(entity);
   }
@@ -52,12 +59,12 @@ export class TaskUsecase {
 
   async update(
     entity: TaskEntity,
-    { title, description, deadlineAt}: InputUpdateTask,
+    { title, description, deadlineAt }: InputUpdateTask,
   ): Promise<TaskEntity> {
     entity.update({
       title: title,
       description: description,
-      deadlineAt: deadlineAt
+      deadlineAt: deadlineAt,
     });
 
     return await this.taskRepository.save(entity);

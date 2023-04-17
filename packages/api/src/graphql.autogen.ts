@@ -49,7 +49,7 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
-    abstract createTask(createTaskInput: CreateTaskInput): Task | Promise<Task>;
+    abstract createTask(createTaskInput: CreateTaskInput, userId?: Nullable<string>): Task | Promise<Task>;
 
     abstract updateTask(updateTaskInput: UpdateTaskInput): Task | Promise<Task>;
 
