@@ -70,6 +70,7 @@ export class User {
     id: string;
     name: string;
     age: number;
+    tasks: Nullable<Task>[];
 }
 
 type Nullable<T> = T | null;

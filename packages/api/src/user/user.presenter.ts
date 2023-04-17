@@ -6,7 +6,7 @@ import { UserEntity } from './user.entity';
 export class UserPresenter {
   // TODO(enhancement): バリデーション関数の実装
 
-  toResponse(entity: UserEntity): User {
+  toResponse(entity: UserEntity): Omit<User, 'tasks'> {
     return {
       id: entity.ulid,
       name: entity.name,
