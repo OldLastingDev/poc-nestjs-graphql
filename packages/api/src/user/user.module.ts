@@ -16,6 +16,6 @@ import { TaskModule } from 'src/task/task.module';
     UserPresenter,
     UserRepository,
   ],
-  exports: [UserUsecase],
+  exports: [UserUsecase, UserPresenter],
 })
 export class UserModule {}

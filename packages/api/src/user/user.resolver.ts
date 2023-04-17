@@ -17,9 +17,9 @@ import { asULID } from 'src/libs/ulid';
 import { TaskUsecase } from 'src/task/task.usecase';
 import { UserUsecase } from './user.usecase';
 import { TaskPresenter } from 'src/task/task.presenter';
-import { Task } from 'src/graphql.autogen';
+import { TaskWithoutOwner } from 'src/task/task.resolver';
 
-type UserWithoutTasks = Omit<User, 'tasks'>;
+export type UserWithoutTasks = Omit<User, 'tasks'>;
 
 @Resolver('User')
 export class UserResolver {
@@ -58,7 +58,9 @@ export class UserResolver {
   }
 
   @ResolveField('tasks')
-  async findAllTasksBelongingToUser(@Parent() user: User): Promise<Task[]> {
+  async findAllTasksBelongingToUser(
+    @Parent() user: User,
+  ): Promise<TaskWithoutOwner[]> {
     const ownerUlid = asULID(user.id);
     const owner = await this.userUsecase.findByUlid(ownerUlid);
     if (owner === undefined) {

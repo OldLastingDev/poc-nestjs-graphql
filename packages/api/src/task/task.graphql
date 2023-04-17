@@ -19,7 +19,7 @@ type Task {
   # タスクを作成したユーザー
   # 現時点では自分のタスクのみを管理する前提なので、Asignee や Reporter の区別は必要ない
   # """
-  # owner: User!
+  owner: User!
 
   """ タスクの締め切り日時(UNIX時間) """
   deadlineAt: Int

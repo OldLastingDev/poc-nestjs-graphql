@@ -4,6 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { UserEntity } from './user.entity';
 import { ULID, asULID } from 'src/libs/ulid';
 import { IRepository } from 'src/interfaces/IRepository';
+import { TaskEntity } from 'src/task/task.entity';
 
 @Injectable()
 export class UserRepository implements IRepository<UserEntity> {
@@ -28,6 +29,23 @@ export class UserRepository implements IRepository<UserEntity> {
       const model = await this.prisma.user.findFirstOrThrow({
         where: {
           ulid: ulid,
+          deletedAt: {
+            equals: null,
+          },
+        },
+      });
+
+      return toEntity(model);
+    } catch {
+      return undefined;
+    }
+  }
+
+  async findByTask(task: TaskEntity): Promise<UserEntity | undefined> {
+    try {
+      const model = await this.prisma.user.findFirstOrThrow({
+        where: {
+          id: task.ownerId,
           deletedAt: {
             equals: null,
           },
@@ -77,15 +95,15 @@ export class UserRepository implements IRepository<UserEntity> {
 }
 
 function toEntity(model: User): UserEntity {
-    const entity = UserEntity.factoryWithAllProperties({
-      id: model.id,
-      ulid: asULID(model.ulid),
-      name: model.name,
-      age: model.age,
-      createdAt: model.createdAt,
-      updatedAt: model.updatedAt,
-      deletedAt: model.deletedAt,
-    });
+  const entity = UserEntity.factoryWithAllProperties({
+    id: model.id,
+    ulid: asULID(model.ulid),
+    name: model.name,
+    age: model.age,
+    createdAt: model.createdAt,
+    updatedAt: model.updatedAt,
+    deletedAt: model.deletedAt,
+  });
 
-    return entity;
-  }
+  return entity;
+}

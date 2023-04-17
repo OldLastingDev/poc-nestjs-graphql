@@ -35,6 +35,7 @@ export class Task {
     title: string;
     description: string;
     done: boolean;
+    owner: User;
     deadlineAt?: Nullable<number>;
 }
 
