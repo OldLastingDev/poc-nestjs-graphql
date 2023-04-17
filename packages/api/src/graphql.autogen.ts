@@ -39,7 +39,7 @@ export class Task {
 }
 
 export abstract class IQuery {
-    abstract tasks(): Nullable<Task>[] | Promise<Nullable<Task>[]>;
+    abstract tasks(userId: string): Nullable<Task>[] | Promise<Nullable<Task>[]>;
 
     abstract task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
 
@@ -49,7 +49,7 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
-    abstract createTask(createTaskInput: CreateTaskInput, userId?: Nullable<string>): Task | Promise<Task>;
+    abstract createTask(createTaskInput: CreateTaskInput, userId: string): Task | Promise<Task>;
 
     abstract updateTask(updateTaskInput: UpdateTaskInput): Task | Promise<Task>;
 

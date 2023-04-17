@@ -37,8 +37,8 @@ export class TaskUsecase {
   }
 
   // TODO(enhancement): pagination
-  async findAll(): Promise<TaskEntity[]> {
-    return await this.taskRepository.findAll();
+  async findAllBelongingToUser(owner: UserEntity): Promise<TaskEntity[]> {
+    return await this.taskRepository.findAllBelongingToUser(owner);
   }
 
   async findByUlid(ulid: ULID): Promise<TaskEntity | undefined> {

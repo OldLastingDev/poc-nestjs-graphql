@@ -62,10 +62,9 @@ input UpdateTaskInput {
 type Query {
   """
   タスクの一覧取得
-  FIXME: システムに保存されているすべてのタスクの一覧を取得することはないので、引数で ownerId を受け取るようにする
   TODO(enhancement): GraphQL のプラクティスに沿った Pagination を実装する
   """
-  tasks: [Task]!
+  tasks(userId: ID!): [Task]!
 
   """ 外部 ID を用いて一意のタスクを取得する """
   task(id: ID!): Task
@@ -73,7 +72,7 @@ type Query {
 
 type Mutation {
   """ タスク作成 """
-  createTask(createTaskInput: CreateTaskInput!, userId: ID): Task!
+  createTask(createTaskInput: CreateTaskInput!, userId: ID!): Task!
 
   """ タスク更新 """
   updateTask(updateTaskInput: UpdateTaskInput!): Task!

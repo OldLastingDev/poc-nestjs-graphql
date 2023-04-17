@@ -15,5 +15,6 @@ import { UserUsecase } from './user.usecase';
     UserPresenter,
     UserRepository,
   ],
+  exports: [UserUsecase],
 })
 export class UserModule {}

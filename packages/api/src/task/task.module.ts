@@ -5,9 +5,16 @@ import { TaskPresenter } from './task.presenter';
 import { TaskRepository } from './task.repository';
 import { TaskUsecase } from './task.usecase';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
-  imports: [PrismaModule],
-  providers: [TaskResolver, TaskService, TaskPresenter, TaskRepository, TaskUsecase],
+  imports: [PrismaModule, UserModule],
+  providers: [
+    TaskResolver,
+    TaskService,
+    TaskPresenter,
+    TaskRepository,
+    TaskUsecase,
+  ],
 })
 export class TaskModule {}

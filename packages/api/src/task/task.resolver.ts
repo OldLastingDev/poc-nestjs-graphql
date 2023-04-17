@@ -23,8 +23,11 @@ export class TaskResolver {
   }
 
   @Query('tasks')
-  async findAll(): Promise<Task[]> {
-    const entities = await this.service.findAll();
+  async findAllBelongingToUser(
+    @Args('userId') userId: string,
+  ): Promise<Task[]> {
+    const userUlid = asULID(userId);
+    const entities = await this.service.findAllBelongingToUser(userUlid);
 
     return entities.map(this.presenter.toResposne);
   }

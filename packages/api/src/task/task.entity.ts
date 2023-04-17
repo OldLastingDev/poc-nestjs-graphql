@@ -81,6 +81,10 @@ export class TaskEntity implements IEntity {
     return this.properties.deadlineAt;
   }
 
+  get ownerId(): number {
+    return this.properties.ownerId;
+  }
+
   get createdAt(): Date {
     return this.properties.createdAt;
   }

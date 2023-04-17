@@ -32,8 +32,13 @@ export class TaskService {
     return entity;
   }
 
-  async findAll(): Promise<TaskEntity[]> {
-    return await this.taskUsecase.findAll();
+  async findAllBelongingToUser(userUlid: ULID): Promise<TaskEntity[]> {
+    const owner = await this.userUsecase.findByUlid(userUlid);
+    if (owner === undefined) {
+      throw new Error(`Not found a user: ${userUlid}`);
+    }
+
+    return await this.taskUsecase.findAllBelongingToUser(owner);
   }
 
   async findByUlid(ulid: ULID): Promise<TaskEntity | undefined> {
