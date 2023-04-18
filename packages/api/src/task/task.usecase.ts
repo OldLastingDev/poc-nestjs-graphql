@@ -7,13 +7,13 @@ import type { UserEntity } from 'src/user/user.entity';
 type InputCreateTask = {
   title: string;
   description: string;
-  deadlineAt?: Date | undefined;
+  deadlineAt?: Date;
 };
 
 type InputUpdateTask = {
   title: string;
   description: string;
-  deadlineAt?: Date | undefined;
+  deadlineAt?: Date;
 };
 
 @Injectable()

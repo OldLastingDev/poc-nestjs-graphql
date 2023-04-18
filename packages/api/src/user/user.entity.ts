@@ -9,11 +9,11 @@ type EssentialProperties = {
 };
 
 type AllProperties = EssentialProperties & {
-  readonly id?: number | undefined;
+  readonly id?: number;
 
-  readonly createdAt?: Date | undefined;
-  updatedAt?: Date | undefined;
-  deletedAt?: Date | undefined;
+  readonly createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
 };
 
 type UpdateInput = Pick<AllProperties, 'name' | 'age'>;

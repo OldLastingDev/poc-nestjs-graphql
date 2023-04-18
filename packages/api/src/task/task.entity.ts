@@ -5,16 +5,16 @@ import type { ULID } from 'src/libs/ulid';
 import type { UserEntity } from 'src/user/user.entity';
 
 type AllProperties = {
-  readonly id?: number | undefined;
+  readonly id?: number;
   readonly ulid: ULID;
   title: string;
   description: string;
   done: boolean;
-  deadlineAt?: Date | undefined;
+  deadlineAt?: Date;
   ownerId: number;
   readonly createdAt: Date;
   updatedAt: Date;
-  deletedAt?: Date | undefined;
+  deletedAt?: Date;
 };
 
 type CreateInput = Pick<AllProperties, 'title' | 'description' | 'deadlineAt'>;
