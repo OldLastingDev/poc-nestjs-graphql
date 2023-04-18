@@ -1,5 +1,6 @@
-import { IEntity } from 'src/interfaces/IEntity';
 import { ULID, generateUlid } from 'src/libs/ulid';
+
+import type { IEntity } from 'src/interfaces/IEntity';
 
 type EssentialProperties = {
   readonly ulid: ULID;
@@ -8,11 +9,11 @@ type EssentialProperties = {
 };
 
 type AllProperties = EssentialProperties & {
-  readonly id?: number;
+  readonly id?: number | undefined;
 
-  readonly createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date;
+  readonly createdAt?: Date | undefined;
+  updatedAt?: Date | undefined;
+  deletedAt?: Date | undefined;
 };
 
 type UpdateInput = Pick<AllProperties, 'name' | 'age'>;

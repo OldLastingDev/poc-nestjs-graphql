@@ -7,13 +7,17 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { TaskService } from './task.service';
-import { CreateTaskInput, Task, UpdateTaskInput } from 'src/graphql.autogen';
 import { asULID } from 'src/libs/ulid';
 import { TaskPresenter } from './task.presenter';
-import { UserWithoutTasks } from 'src/user/user.resolver';
 import { TaskUsecase } from './task.usecase';
 import { UserUsecase } from 'src/user/user.usecase';
 import { UserPresenter } from 'src/user/user.presenter';
+import type { UserWithoutTasks } from 'src/user/user.resolver';
+import type {
+  CreateTaskInput,
+  Task,
+  UpdateTaskInput,
+} from 'src/graphql.autogen';
 
 export type TaskWithoutOwner = Omit<Task, 'owner'>;
 

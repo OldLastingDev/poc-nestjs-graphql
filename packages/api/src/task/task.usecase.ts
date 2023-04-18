@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { TaskRepository } from './task.repository';
 import { TaskEntity } from './task.entity';
-import { ULID } from 'src/libs/ulid';
-import { UserEntity } from 'src/user/user.entity';
+import type { ULID } from 'src/libs/ulid';
+import type { UserEntity } from 'src/user/user.entity';
 
 type InputCreateTask = {
   title: string;
   description: string;
-  deadlineAt?: Date;
+  deadlineAt?: Date | undefined;
 };
 
 type InputUpdateTask = {
   title: string;
   description: string;
-  deadlineAt?: Date;
+  deadlineAt?: Date | undefined;
 };
 
 @Injectable()

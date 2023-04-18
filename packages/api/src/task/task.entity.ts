@@ -2,19 +2,19 @@ import { generateUlid } from 'src/libs/ulid';
 
 import type { IEntity } from 'src/interfaces/IEntity';
 import type { ULID } from 'src/libs/ulid';
-import { UserEntity } from 'src/user/user.entity';
+import type { UserEntity } from 'src/user/user.entity';
 
 type AllProperties = {
-  readonly id?: number;
+  readonly id?: number | undefined;
   readonly ulid: ULID;
   title: string;
   description: string;
   done: boolean;
-  deadlineAt?: Date;
+  deadlineAt?: Date | undefined;
   ownerId: number;
   readonly createdAt: Date;
   updatedAt: Date;
-  deletedAt?: Date;
+  deletedAt?: Date | undefined;
 };
 
 type CreateInput = Pick<AllProperties, 'title' | 'description' | 'deadlineAt'>;

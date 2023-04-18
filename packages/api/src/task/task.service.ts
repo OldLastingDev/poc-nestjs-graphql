@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTaskInput, UpdateTaskInput } from 'src/graphql.autogen';
-import { TaskEntity } from './task.entity';
-import { ULID } from 'src/libs/ulid';
 import { TaskUsecase } from './task.usecase';
 import { UserUsecase } from 'src/user/user.usecase';
+import type { CreateTaskInput, UpdateTaskInput } from 'src/graphql.autogen';
+import type { TaskEntity } from './task.entity';
+import type { ULID } from 'src/libs/ulid';
 
 @Injectable()
 export class TaskService {

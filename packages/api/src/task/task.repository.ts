@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Task } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ULID, asULID } from 'src/libs/ulid';
-import { IRepository } from 'src/interfaces/IRepository';
 import { TaskEntity } from './task.entity';
-import { UserEntity } from 'src/user/user.entity';
+
+import type { Task } from '@prisma/client';
+import type { UserEntity } from 'src/user/user.entity';
+import type { IRepository } from 'src/interfaces/IRepository';
 
 @Injectable()
 export class TaskRepository implements IRepository<TaskEntity> {
