@@ -11,5 +11,5 @@ const definitionsFactory = new GraphQLDefinitionsFactory();
 definitionsFactory.generate({
   typePaths: [join(SRC_DIR, '**', '*.graphql')],
   path: join(SRC_DIR, 'graphql.autogen.ts'),
-  outputAs: 'class',
+  outputAs: 'interface',
 });

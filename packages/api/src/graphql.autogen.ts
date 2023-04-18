@@ -8,29 +8,29 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export class CreateTaskInput {
+export interface CreateTaskInput {
     title: string;
     description: string;
     deadlineAt?: Nullable<number>;
 }
 
-export class UpdateTaskInput {
+export interface UpdateTaskInput {
     title: string;
     description: string;
     deadlineAt?: Nullable<number>;
 }
 
-export class CreateUserInput {
+export interface CreateUserInput {
     name: string;
     age: number;
 }
 
-export class UpdateUserInput {
+export interface UpdateUserInput {
     name: string;
     age: number;
 }
 
-export class Task {
+export interface Task {
     id: string;
     title: string;
     description: string;
@@ -39,35 +39,25 @@ export class Task {
     deadlineAt?: Nullable<number>;
 }
 
-export abstract class IQuery {
-    abstract tasks(userId: string): Nullable<Task>[] | Promise<Nullable<Task>[]>;
-
-    abstract task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
-
-    abstract users(): Nullable<User>[] | Promise<Nullable<User>[]>;
-
-    abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
+export interface IQuery {
+    tasks(userId: string): Nullable<Task>[] | Promise<Nullable<Task>[]>;
+    task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
+    users(): Nullable<User>[] | Promise<Nullable<User>[]>;
+    user(id: string): Nullable<User> | Promise<Nullable<User>>;
 }
 
-export abstract class IMutation {
-    abstract createTask(createTaskInput: CreateTaskInput, userId: string): Task | Promise<Task>;
-
-    abstract updateTask(updateTaskInput: UpdateTaskInput): Task | Promise<Task>;
-
-    abstract didTask(id: string): Task | Promise<Task>;
-
-    abstract undoTask(id: string): Task | Promise<Task>;
-
-    abstract removeTask(id: string): boolean | Promise<boolean>;
-
-    abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
-
-    abstract updateUser(id: string, updateUserInput: UpdateUserInput): User | Promise<User>;
-
-    abstract removeUser(id: string): boolean | Promise<boolean>;
+export interface IMutation {
+    createTask(createTaskInput: CreateTaskInput, userId: string): Task | Promise<Task>;
+    updateTask(updateTaskInput: UpdateTaskInput): Task | Promise<Task>;
+    didTask(id: string): Task | Promise<Task>;
+    undoTask(id: string): Task | Promise<Task>;
+    removeTask(id: string): boolean | Promise<boolean>;
+    createUser(createUserInput: CreateUserInput): User | Promise<User>;
+    updateUser(id: string, updateUserInput: UpdateUserInput): User | Promise<User>;
+    removeUser(id: string): boolean | Promise<boolean>;
 }
 
-export class User {
+export interface User {
     id: string;
     name: string;
     age: number;
