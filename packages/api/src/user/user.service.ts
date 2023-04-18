@@ -20,7 +20,7 @@ export class UserService {
     return await this.userUsecase.findAll();
   }
 
-  async findByUlid(ulid: ULID): Promise<UserEntity | null> {
+  async findByUlid(ulid: ULID): Promise<UserEntity | undefined> {
     return await this.userUsecase.findByUlid(ulid);
   }
 

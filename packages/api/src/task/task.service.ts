@@ -23,7 +23,7 @@ export class TaskService {
         title: input.title,
         description: input.description,
         deadlineAt:
-          input.deadlineAt === undefined
+          input.deadlineAt === undefined || input.deadlineAt === null
             ? undefined
             : new Date(input.deadlineAt),
       },

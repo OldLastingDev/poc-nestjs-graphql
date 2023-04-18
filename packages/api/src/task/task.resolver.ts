@@ -49,12 +49,12 @@ export class TaskResolver {
   }
 
   @Query('task')
-  async findOne(@Args('id') id: string): Promise<TaskWithoutOwner | null> {
+  async findOne(@Args('id') id: string): Promise<TaskWithoutOwner | undefined> {
     const ulid = asULID(id);
     const entity = await this.service.findByUlid(ulid);
 
-    if (entity === null) {
-      return null;
+    if (entity === undefined) {
+      return undefined;
     }
 
     return this.taskPresenter.toResposne(entity);
@@ -70,6 +70,10 @@ export class TaskResolver {
     }
 
     const owner = await this.userUsecase.findByTask(taskEntity);
+    if (owner === undefined) {
+      throw new Error(`Not found a user, who has the task@${task.id}`);
+    }
+
     return this.userPresenter.toResponse(owner);
   }
 

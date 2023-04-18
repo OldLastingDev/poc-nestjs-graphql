@@ -93,11 +93,11 @@ function toEntity(model: Task): TaskEntity {
     title: model.title,
     description: model.description,
     done: model.done,
-    deadlineAt: model.deadlineAt,
+    deadlineAt: model.deadlineAt === null ? undefined : model.deadlineAt,
     ownerId: model.ownerId,
     createdAt: model.createdAt,
     updatedAt: model.updatedAt,
-    deletedAt: model.deletedAt,
+    deletedAt: model.deletedAt === null ? undefined : model.deletedAt,
   });
 
   return entity;

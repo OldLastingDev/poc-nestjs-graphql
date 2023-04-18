@@ -73,11 +73,7 @@ export class TaskEntity implements IEntity {
     return this.properties.done;
   }
 
-  get deadlineAt(): Date | null {
-    if (this.properties.deadlineAt === undefined) {
-      return null;
-    }
-
+  get deadlineAt(): Date | undefined {
     return this.properties.deadlineAt;
   }
 

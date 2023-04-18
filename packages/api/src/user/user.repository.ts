@@ -102,7 +102,7 @@ function toEntity(model: User): UserEntity {
     age: model.age,
     createdAt: model.createdAt,
     updatedAt: model.updatedAt,
-    deletedAt: model.deletedAt,
+    deletedAt: model.deletedAt === null ? undefined : model.deletedAt,
   });
 
   return entity;
