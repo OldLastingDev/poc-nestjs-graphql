@@ -1,5 +1,6 @@
-import { IEntity } from 'src/interfaces/IEntity';
 import { ULID, generateUlid } from 'src/libs/ulid';
+
+import type { IEntity } from 'src/interfaces/IEntity';
 
 type EssentialProperties = {
   readonly ulid: ULID;

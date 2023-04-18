@@ -17,7 +17,7 @@ import { asULID } from 'src/libs/ulid';
 import { TaskUsecase } from 'src/task/task.usecase';
 import { UserUsecase } from './user.usecase';
 import { TaskPresenter } from 'src/task/task.presenter';
-import { TaskWithoutOwner } from 'src/task/task.resolver';
+import type { TaskWithoutOwner } from 'src/task/task.resolver';
 
 export type UserWithoutTasks = Omit<User, 'tasks'>;
 

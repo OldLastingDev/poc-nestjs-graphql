@@ -2,7 +2,7 @@ import { generateUlid } from 'src/libs/ulid';
 
 import type { IEntity } from 'src/interfaces/IEntity';
 import type { ULID } from 'src/libs/ulid';
-import { UserEntity } from 'src/user/user.entity';
+import type { UserEntity } from 'src/user/user.entity';
 
 type AllProperties = {
   readonly id?: number;
@@ -73,11 +73,7 @@ export class TaskEntity implements IEntity {
     return this.properties.done;
   }
 
-  get deadlineAt(): Date | null {
-    if (this.properties.deadlineAt === undefined) {
-      return null;
-    }
-
+  get deadlineAt(): Date | undefined {
     return this.properties.deadlineAt;
   }
 

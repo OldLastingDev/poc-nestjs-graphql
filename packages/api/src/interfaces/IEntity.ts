@@ -2,7 +2,7 @@
  * TODO: このファイルの正しい置き場所はどこだろう？
  */
 
-import { ULID } from 'src/libs/ulid';
+import type { ULID } from 'src/libs/ulid';
 
 /**
  * Entity を表すクラスに実装されるべき機能
@@ -12,7 +12,7 @@ export interface IEntity {
   readonly ulid: ULID;
   readonly createdAt: Date;
   readonly updatedAt: Date;
-  readonly deletedAt: Date | undefined;
+  readonly deletedAt?: Date;
 
   hasPerpetuated(): boolean;
 

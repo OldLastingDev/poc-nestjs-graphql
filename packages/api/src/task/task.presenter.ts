@@ -1,5 +1,5 @@
-import { Task } from 'src/graphql.autogen';
-import { TaskEntity } from './task.entity';
+import type { Task } from 'src/graphql.autogen';
+import type { TaskEntity } from './task.entity';
 
 export class TaskPresenter {
   toResposne(entity: TaskEntity): Omit<Task, 'owner'> {

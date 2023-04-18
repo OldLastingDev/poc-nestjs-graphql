@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { UserRepository } from './user.repository';
-import { ULID } from 'src/libs/ulid';
-import { TaskEntity } from 'src/task/task.entity';
+import type { ULID } from 'src/libs/ulid';
+import type { TaskEntity } from 'src/task/task.entity';
 
 type InputCreateUser = {
   name: string;

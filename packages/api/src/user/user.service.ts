@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { UserEntity } from './user.entity';
-
-import type { CreateUserInput, UpdateUserInput } from 'src/graphql.autogen';
 import { UserUsecase } from './user.usecase';
-import { ULID } from 'src/libs/ulid';
+
+import type { UserEntity } from './user.entity';
+import type { CreateUserInput, UpdateUserInput } from 'src/graphql.autogen';
+import type { ULID } from 'src/libs/ulid';
 
 @Injectable()
 export class UserService {
@@ -20,7 +20,7 @@ export class UserService {
     return await this.userUsecase.findAll();
   }
 
-  async findByUlid(ulid: ULID): Promise<UserEntity | null> {
+  async findByUlid(ulid: ULID): Promise<UserEntity | undefined> {
     return await this.userUsecase.findByUlid(ulid);
   }
 

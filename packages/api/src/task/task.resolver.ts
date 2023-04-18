@@ -7,13 +7,17 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { TaskService } from './task.service';
-import { CreateTaskInput, Task, UpdateTaskInput } from 'src/graphql.autogen';
 import { asULID } from 'src/libs/ulid';
 import { TaskPresenter } from './task.presenter';
-import { UserWithoutTasks } from 'src/user/user.resolver';
 import { TaskUsecase } from './task.usecase';
 import { UserUsecase } from 'src/user/user.usecase';
 import { UserPresenter } from 'src/user/user.presenter';
+import type { UserWithoutTasks } from 'src/user/user.resolver';
+import type {
+  CreateTaskInput,
+  Task,
+  UpdateTaskInput,
+} from 'src/graphql.autogen';
 
 export type TaskWithoutOwner = Omit<Task, 'owner'>;
 
@@ -49,12 +53,12 @@ export class TaskResolver {
   }
 
   @Query('task')
-  async findOne(@Args('id') id: string): Promise<TaskWithoutOwner | null> {
+  async findOne(@Args('id') id: string): Promise<TaskWithoutOwner | undefined> {
     const ulid = asULID(id);
     const entity = await this.service.findByUlid(ulid);
 
-    if (entity === null) {
-      return null;
+    if (entity === undefined) {
+      return undefined;
     }
 
     return this.taskPresenter.toResposne(entity);
@@ -70,6 +74,10 @@ export class TaskResolver {
     }
 
     const owner = await this.userUsecase.findByTask(taskEntity);
+    if (owner === undefined) {
+      throw new Error(`Not found a user, who has the task@${task.id}`);
+    }
+
     return this.userPresenter.toResponse(owner);
   }
 
