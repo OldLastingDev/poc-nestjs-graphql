@@ -3,9 +3,12 @@ import { AppModule } from './app.module';
 import { PrismaService } from './prisma/prisma.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
-  // TODO(enhancement): CORS
+  const app = await NestFactory.create(AppModule, {
+    // TODO(enhancement): move to config file
+    cors: {
+      origin: 'http://localhost:3000',
+    },
+  });
 
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
