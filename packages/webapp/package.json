@@ -1,7 +1,6 @@
 {
   "name": "@tutorial/webapp",
   "private": true,
-  "proxy": "http://localhost:3001",
   "scripts": {
     "dev": "next",
     "build": "next build",
